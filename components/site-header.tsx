@@ -26,6 +26,9 @@ export function SiteHeader() {
   const pathname = usePathname()
   const { data: session } = useSession()
 
+  // Hide on dashboard routes
+  if (pathname?.startsWith("/dashboard")) return null
+
   const isActive = (href: string) => {
     if (href.startsWith("/#")) {
       return pathname === "/" && href.endsWith(window.location.hash)

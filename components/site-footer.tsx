@@ -1,5 +1,8 @@
+"use client"
+
 import Link from "next/link"
 import { GalleryVerticalEnd } from "lucide-react"
+import { usePathname } from "next/navigation"
 
 const navigation = {
   product: [
@@ -46,6 +49,11 @@ const navigation = {
 }
 
 export function SiteFooter() {
+  const pathname = usePathname()
+
+  // Hide on dashboard routes
+  if (pathname?.startsWith("/dashboard")) return null
+
   return (
     <footer className="border-t bg-muted/40 flex justify-center">
       <div className="container max-w-screen-2xl py-12 lg:py-16">
