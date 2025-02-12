@@ -1,0 +1,205 @@
+# UI and Styling Rules
+
+## Component Architecture
+- Use Server Components by default
+- Add 'use client' only when necessary
+- Implement proper component composition
+- Use proper prop typing with TypeScript
+- Keep components focused and single-purpose
+- Use proper error boundaries
+- Implement proper loading states
+- Use proper suspense boundaries
+
+## Shadcn UI Usage
+- Use Shadcn UI components as base
+- Extend components using class-variance-authority
+- Implement proper component variants
+- Use proper component composition
+- Keep consistent component styling
+- Use proper component props
+- Implement proper accessibility
+- Use proper component documentation
+
+## Radix UI Integration
+- Use Radix UI for complex interactions
+- Implement proper accessibility patterns
+- Use proper component composition
+- Keep consistent styling
+- Use proper state management
+- Implement proper keyboard navigation
+- Use proper ARIA attributes
+
+## Tailwind CSS Best Practices
+- Use proper responsive design
+- Implement proper dark mode support
+- Use proper color palette
+- Keep consistent spacing
+- Use proper typography
+- Implement proper animations
+- Use proper layout patterns
+- Keep styles maintainable
+
+## Responsive Design
+- Use mobile-first approach
+- Implement proper breakpoints
+- Use proper container queries
+- Keep layouts fluid
+- Use proper spacing
+- Implement proper typography
+- Use proper image handling
+- Keep responsive patterns consistent
+
+## Dark Mode
+- Use next-themes for theme management
+- Implement proper color schemes
+- Use proper contrast ratios
+- Keep consistent styling
+- Use proper system preferences
+- Implement proper transitions
+- Use proper color variables
+
+## Accessibility
+- Use proper ARIA attributes
+- Implement proper keyboard navigation
+- Use proper focus management
+- Keep proper contrast ratios
+- Use proper semantic HTML
+- Implement proper screen reader support
+- Use proper form labels
+- Keep proper tab order
+
+## Performance
+- Use proper image optimization
+- Implement proper code splitting
+- Use proper lazy loading
+- Keep bundle size minimal
+- Use proper caching strategies
+- Implement proper prefetching
+- Use proper asset optimization
+
+## Animation
+- Use proper CSS transitions
+- Implement proper motion design
+- Use proper animation timing
+- Keep animations performant
+- Use proper reduced motion
+- Implement proper loading states
+- Use proper hover states
+
+## Icons and Assets
+- Use Lucide React icons
+- Implement proper asset optimization
+- Use proper image formats
+- Keep consistent sizing
+- Use proper lazy loading
+- Implement proper caching
+- Use proper alt text
+
+## Component Installation
+- Install Shadcn UI components using CLI
+- Use `pnpm dlx shadcn-ui@latest add [component]`
+- Never copy/paste Shadcn component code
+- Keep Shadcn components in `components/ui`
+- Update themes through `components/ui/themes.ts`
+- Maintain registry.json for installed components
+- Use proper component initialization
+
+## Component Structure
+- Use installed Shadcn UI components as base
+- Extend Radix UI primitives for complex interactions
+- Keep UI components pure and presentational
+- Implement compound components pattern when needed
+- Use React Server Components by default
+- Ensure components support metadata injection
+- Structure components for optimal crawler parsing
+
+## Tailwind CSS
+- Follow mobile-first responsive design
+- Use semantic color variables from `tailwind.config.js`
+- Maintain consistent spacing using Tailwind's scale
+- Group related utilities with @apply in CSS modules
+- Use CSS Grid for layouts, Flexbox for components
+- Leverage Tailwind's container queries
+
+## Design System
+- Follow Shadcn UI's design tokens
+- Use CSS variables for theme values
+- Maintain dark mode compatibility
+- Keep consistent spacing rhythm
+- Use relative units (rem) over pixels
+- Follow accessibility guidelines
+
+## Component Patterns
+- Implement controlled components pattern
+- Use composition for variant styles
+- Keep animations performant
+- Implement proper loading states
+- Handle error states gracefully
+- Support RTL languages
+
+## Best Practices
+- Lazy load non-critical components
+- Use Image component for optimized images
+- Implement proper skeleton loading
+- Use CSS Grid for main layouts
+- Keep animations under 60fps
+- Implement proper focus management
+- Ensure content is visible without JavaScript
+- Implement progressive enhancement
+- Use semantic class names for important content
+
+## Accessibility
+- Use semantic HTML elements
+- Implement ARIA attributes correctly
+- Ensure keyboard navigation
+- Maintain proper color contrast
+- Support reduced motion
+- Test with screen readers
+- Use proper heading hierarchy
+- Implement proper landmark roles
+- Ensure proper tab order
+- Add descriptive link text
+
+## Performance
+- Code-split large components
+- Optimize images and assets
+- Minimize CSS bundle size
+- Use will-change sparingly
+- Implement proper Suspense boundaries
+- Monitor Core Web Vitals
+- Optimize for mobile-first rendering
+- Minimize render-blocking resources
+- Implement proper resource hints
+- Use proper caching strategies
+
+## SEO-Driven UI
+- Structure content hierarchically
+- Use proper HTML5 semantic elements
+- Implement proper heading structure
+- Ensure content is crawlable
+- Add proper schema markup
+- Optimize for Core Web Vitals
+- Implement proper meta descriptions
+- Use descriptive alt texts
+- Structure navigation semantically
+- Implement proper breadcrumbs
+
+## Accessibility
+- Use semantic HTML elements
+- Implement ARIA attributes correctly
+- Ensure keyboard navigation
+- Maintain proper color contrast
+- Support reduced motion
+- Test with screen readers
+- Use proper heading hierarchy
+- Implement proper landmark roles
+- Ensure proper tab order
+- Add descriptive link text
+
+## Performance
+- Code-split large components
+- Optimize images and assets
+- Minimize CSS bundle size
+- Use will-change sparingly
+- Implement proper Suspense boundaries
+- Monitor Core Web Vitals 

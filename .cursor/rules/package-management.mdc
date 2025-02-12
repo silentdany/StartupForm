@@ -1,0 +1,34 @@
+# Package Management Rules
+
+## Package Manager
+- Use pnpm as the primary package manager
+- Maintain pnpm-lock.yaml for dependency locking
+- Use pnpm workspaces for monorepos
+- Run `pnpm install` for dependency installation
+- Use `pnpm add` for adding new packages
+- Use `pnpm remove` for removing packages
+- Use `pnpm update` for updating packages
+
+## Dependencies
+- Keep dependencies up to date
+- Use exact versions in package.json
+- Audit dependencies regularly
+- Use peerDependencies appropriately
+- Minimize dependency size
+- Use devDependencies for development tools
+
+## Scripts
+- Use pnpm run for script execution
+- Maintain consistent script naming
+- Document scripts in README.md
+- Use cross-platform compatible commands
+- Implement proper build scripts
+- Use proper test scripts
+
+## Best Practices
+- Use .npmrc for pnpm configuration
+- Implement proper caching strategies
+- Use proper CI/CD integration
+- Keep node_modules in .gitignore
+- Use proper version constraints
+- Document dependency purposes 

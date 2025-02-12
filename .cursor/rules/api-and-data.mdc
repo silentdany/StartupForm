@@ -1,0 +1,81 @@
+# API and Data Fetching Rules
+
+## Server Actions and API Routes
+- Use Server Actions as the primary method for mutations
+- Implement proper error handling with Server Actions
+- Use Next.js Route Handlers for complex API endpoints
+- Leverage Next.js Edge Runtime for performance-critical routes
+- Use proper TypeScript types for action parameters and responses
+- Implement proper Zod validation for all inputs
+
+## Data Fetching Patterns
+- Use React Server Components (RSC) as the default approach
+- Implement @tanstack/react-query for client-side state management
+- Use proper suspense boundaries with React Suspense
+- Leverage Next.js cache() and revalidate patterns
+- Implement proper error boundaries with react-error-boundary
+- Use proper loading states with React Suspense
+
+## React Query Best Practices
+- Use proper query keys with type safety
+- Implement proper mutation handlers
+- Use proper query invalidation
+- Leverage optimistic updates
+- Implement proper retry logic
+- Use proper prefetching strategies
+- Handle infinite queries properly
+
+## State Management
+- Use Server Components state by default
+- Implement URL state with Next.js searchParams
+- Use React Query for server state
+- Keep client state minimal
+- Use form state with react-hook-form
+- Implement proper Zod validation
+- Handle hydration properly
+- Use URL state for shareable data
+
+## Error Handling and Validation
+- Use Zod for all runtime validation
+- Implement proper error boundaries
+- Use custom error classes
+- Handle network errors gracefully
+- Log errors appropriately
+- Show user-friendly error messages
+- Validate environment variables with Zod
+
+## Security Best Practices
+- Use Next-Auth for authentication
+- Implement proper CSRF protection
+- Use proper session management
+- Implement rate limiting
+- Follow OWASP security guidelines
+- Use proper environment variable handling
+- Implement proper input sanitization
+
+## Performance Optimization
+- Use React Server Components by default
+- Implement proper caching strategies
+- Use Edge Runtime when appropriate
+- Optimize with proper suspense boundaries
+- Implement proper streaming responses
+- Use proper connection pooling
+- Monitor API performance
+
+## Data Validation and Type Safety
+- Use Zod for runtime validation
+- Implement proper TypeScript types
+- Use proper type inference
+- Handle edge cases properly
+- Validate all external data
+- Use proper type guards
+- Implement proper error types
+
+## Form Handling
+- Use react-hook-form for all forms
+- Implement proper Zod validation
+- Use proper error handling
+- Implement proper form state
+- Use proper form submission
+- Handle form reset properly
+- Implement proper loading states

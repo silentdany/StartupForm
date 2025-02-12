@@ -1,0 +1,95 @@
+---
+description: 
+globs: 
+---
+# Architecture Rules
+
+## Project Structure
+- Use App Router directory structure
+- Keep components focused and modular
+- Implement proper route grouping
+- Use proper parallel routes
+- Keep proper intercepting routes
+- Implement proper loading states
+- Use proper error boundaries
+- Keep proper route handlers
+
+## Component Architecture
+- Use Server Components by default
+- Add 'use client' only when necessary
+- Keep components focused
+- Implement proper component composition
+- Use proper prop typing
+- Keep proper error boundaries
+- Implement proper loading states
+- Use proper suspense boundaries
+
+## Data Flow
+- Use Server Actions for mutations
+- Implement React Query for client state
+- Use proper data fetching patterns
+- Keep proper caching strategies
+- Implement proper revalidation
+- Use proper optimistic updates
+- Keep proper error handling
+- Implement proper loading states
+
+## State Management
+- Use Server Components state by default
+- Implement URL state with searchParams
+- Use React Query for server state
+- Keep client state minimal
+- Use proper form state
+- Implement proper validation
+- Keep proper error handling
+- Use proper loading states
+
+## Authentication
+- Use Auth.js (v5) for authentication
+- Implement proper session management
+- Use proper middleware
+- Keep proper route protection
+- Implement proper role-based access
+- Use proper error handling
+- Keep proper loading states
+- Implement proper session revalidation
+
+## Performance
+- Use proper code splitting
+- Implement proper lazy loading
+- Use proper caching strategies
+- Keep proper bundle size
+- Implement proper prefetching
+- Use proper asset optimization
+- Keep proper monitoring
+- Implement proper error tracking
+
+## Security
+- Use proper authentication
+- Implement proper authorization
+- Use proper input validation
+- Keep proper session management
+- Implement proper CSRF protection
+- Use proper rate limiting
+- Keep proper error handling
+- Implement proper logging
+
+## Testing
+- Use proper unit testing
+- Implement proper integration testing
+- Use proper end-to-end testing
+- Keep proper test coverage
+- Implement proper test helpers
+- Use proper test fixtures
+- Keep proper test documentation
+- Implement proper CI/CD
+
+## Deployment
+- Use proper build process
+- Implement proper environment variables
+- Use proper deployment strategy
+- Keep proper monitoring
+- Implement proper logging
+- Use proper error tracking
+- Keep proper backup strategy
+- Implement proper rollback strategy 
