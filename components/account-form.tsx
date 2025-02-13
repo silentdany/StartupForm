@@ -1,13 +1,16 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { toast } from "sonner"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
+import { signOut } from 'next-auth/react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import * as z from 'zod'
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -15,10 +18,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
+} from '@/components/ui/card'
 import {
   Dialog,
   DialogContent,
@@ -27,11 +27,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Separator } from '@/components/ui/separator'
 
 const accountFormSchema = z.object({
   name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+    message: 'Name must be at least 2 characters.',
   }),
 })
 
@@ -47,67 +50,74 @@ interface AccountFormProps {
 
 export function AccountForm({ user }: AccountFormProps) {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
     defaultValues: {
-      name: user.name ?? "",
+      name: user.name ?? '',
     },
   })
 
-  async function onSubmit(data: AccountFormValues) {
-    setIsLoading(true)
-
-    try {
-      const response = await fetch("/api/user", {
-        method: "PATCH",
+  const updateProfile = useMutation({
+    mutationFn: async (data: AccountFormValues) => {
+      const response = await fetch('/api/user', {
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       })
 
-      if (!response.ok) throw new Error("Failed to update profile")
+      if (!response.ok) {
+        throw new Error('Failed to update profile')
+      }
 
-      toast.success("Profile updated", {
-        description: "Your profile has been updated successfully."
+      return response.json()
+    },
+    onSuccess: async () => {
+      toast.success('Profile updated', {
+        description: 'Your profile has been updated successfully.',
       })
-      
+      await signOut({ redirect: false })
       router.refresh()
-    } catch {
-      toast.error("Error", {
-        description: "Something went wrong. Please try again."
+    },
+    onError: () => {
+      toast.error('Error', {
+        description: 'Something went wrong. Please try again.',
       })
-    } finally {
-      setIsLoading(false)
-    }
-  }
+    },
+  })
 
-  async function onDelete() {
-    setIsLoading(true)
-
-    try {
-      const response = await fetch("/api/user", {
-        method: "DELETE",
+  const deleteAccount = useMutation({
+    mutationFn: async () => {
+      const response = await fetch('/api/user', {
+        method: 'DELETE',
       })
 
-      if (!response.ok) throw new Error("Failed to delete account")
-
-      toast.success("Account deleted", {
-        description: "Your account has been permanently deleted."
+      if (!response.ok) {
+        throw new Error('Failed to delete account')
+      }
+    },
+    onSuccess: async () => {
+      toast.success('Account deleted', {
+        description: 'Your account has been permanently deleted.',
       })
-      
-      router.push("/")
-    } catch {
-      toast.error("Error", {
-        description: "Something went wrong. Please try again."
+      await signOut({ redirect: false })
+      router.push('/')
+    },
+    onError: () => {
+      toast.error('Error', {
+        description: 'Something went wrong. Please try again.',
       })
-    } finally {
-      setIsLoading(false)
+    },
+    onSettled: () => {
       setShowDeleteDialog(false)
-    }
+    },
+  })
+
+  function onSubmit(data: AccountFormValues) {
+    updateProfile.mutate(data)
   }
 
   return (
@@ -123,10 +133,14 @@ export function AccountForm({ user }: AccountFormProps) {
           <CardContent className="space-y-6">
             <div className="flex items-center gap-6">
               <Avatar className="h-20 w-20">
-                <AvatarImage src={user.image ?? ""} alt={user.name ?? ""} />
-                <AvatarFallback>{user.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
+                <AvatarImage src={user.image ?? ''} alt={user.name ?? ''} />
+                <AvatarFallback>
+                  {user.name?.slice(0, 2).toUpperCase()}
+                </AvatarFallback>
               </Avatar>
-              <Button variant="outline" disabled>Change Avatar</Button>
+              <Button variant="outline" disabled>
+                Change Avatar
+              </Button>
             </div>
             <Separator />
             <div className="grid gap-4">
@@ -134,11 +148,11 @@ export function AccountForm({ user }: AccountFormProps) {
                 <Label htmlFor="name">Name</Label>
                 <Input
                   id="name"
-                  {...form.register("name")}
+                  {...form.register('name')}
                   placeholder="Your name"
                 />
                 {form.formState.errors.name && (
-                  <p className="text-sm text-destructive">
+                  <p className="text-destructive text-sm">
                     {form.formState.errors.name.message}
                   </p>
                 )}
@@ -148,11 +162,11 @@ export function AccountForm({ user }: AccountFormProps) {
                 <Input
                   id="email"
                   type="email"
-                  value={user.email ?? ""}
+                  value={user.email ?? ''}
                   disabled
                   className="opacity-50"
                 />
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   Your email address is managed through your Google account.
                 </p>
               </div>
@@ -163,12 +177,12 @@ export function AccountForm({ user }: AccountFormProps) {
               type="button"
               variant="outline"
               onClick={() => router.refresh()}
-              disabled={isLoading}
+              disabled={updateProfile.isPending}
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Saving..." : "Save Changes"}
+            <Button type="submit" disabled={updateProfile.isPending}>
+              {updateProfile.isPending ? 'Saving...' : 'Save Changes'}
             </Button>
           </CardFooter>
         </form>
@@ -185,8 +199,9 @@ export function AccountForm({ user }: AccountFormProps) {
           <div className="grid gap-4">
             <div className="grid gap-2">
               <h3 className="font-medium">Delete Account</h3>
-              <p className="text-sm text-muted-foreground">
-                Permanently delete your account and all associated data. This action cannot be undone.
+              <p className="text-muted-foreground text-sm">
+                Permanently delete your account and all associated data. This
+                action cannot be undone.
               </p>
             </div>
             <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
@@ -197,24 +212,24 @@ export function AccountForm({ user }: AccountFormProps) {
                 <DialogHeader>
                   <DialogTitle>Are you absolutely sure?</DialogTitle>
                   <DialogDescription>
-                    This action cannot be undone. This will permanently delete your
-                    account and remove your data from our servers.
+                    This action cannot be undone. This will permanently delete
+                    your account and remove your data from our servers.
                   </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
                   <Button
                     variant="outline"
                     onClick={() => setShowDeleteDialog(false)}
-                    disabled={isLoading}
+                    disabled={deleteAccount.isPending}
                   >
                     Cancel
                   </Button>
                   <Button
                     variant="destructive"
-                    onClick={onDelete}
-                    disabled={isLoading}
+                    onClick={() => deleteAccount.mutate()}
+                    disabled={deleteAccount.isPending}
                   >
-                    {isLoading ? "Deleting..." : "Delete Account"}
+                    {deleteAccount.isPending ? 'Deleting...' : 'Delete Account'}
                   </Button>
                 </DialogFooter>
               </DialogContent>
@@ -224,4 +239,4 @@ export function AccountForm({ user }: AccountFormProps) {
       </Card>
     </div>
   )
-} 
+}
