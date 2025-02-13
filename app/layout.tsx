@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Providers } from "@/components/providers";
 import { cn } from "@/lib/utils";
+import { Toaster } from "sonner"
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -38,6 +39,7 @@ export default function RootLayout({
           <SiteHeader />
           <main className="flex-1">{children}</main>
           <SiteFooter />
+          <Toaster />
         </Providers>
       </body>
     </html>

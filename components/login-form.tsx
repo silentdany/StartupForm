@@ -6,17 +6,20 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { signIn } from "next-auth/react"
 import { useState } from "react"
+import { useSearchParams } from "next/navigation"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">) {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+  const searchParams = useSearchParams()
+  const from = searchParams.get("from") ?? "/dashboard"
 
   async function handleGoogleLogin() {
     setIsGoogleLoading(true)
     try {
-      await signIn("google", { callbackUrl: "/" })
+      await signIn("google", { callbackUrl: from })
     } catch (error) {
       // Oh look, another error to add to the universe's entropy
       console.error("Google login failed:", error)

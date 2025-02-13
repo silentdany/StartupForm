@@ -1,4 +1,4 @@
-import { Providers } from "@/components/providers"
+import { Providers } from '@/components/providers'
 
 export default function DashboardLayout({
   children,
@@ -10,4 +10,4 @@ export default function DashboardLayout({
       <main className="flex-1">{children}</main>
     </Providers>
   )
-} 
+}
