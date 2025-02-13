@@ -31,14 +31,54 @@ globs:
 
 ## State Management
 - Use Server Components state by default
-- Implement URL state with Next.js searchParams
+- Implement URL state with nuqs:
+  - Use searchParamsState for simple URL state
+  - Implement parseAsString for text parameters
+  - Use parseAsFloat/parseAsInteger for numbers
+  - Implement parseAsArrayOf for arrays
+  - Use parseAsBoolean for boolean flags
+  - Implement parseAsJson for complex objects
+  - Use createSearchParamsCache for performance
+  - Handle URL state serialization properly
 - Use React Query for server state
+- Use Zustand for client-side state management:
+  - Create atomic stores for specific features
+  - Use TypeScript for type-safe stores
+  - Implement proper devtools integration
+  - Use proper middleware (persist, devtools)
+  - Keep stores small and focused
+  - Use proper selectors for performance
+  - Implement proper store composition
 - Keep client state minimal
 - Use form state with react-hook-form
 - Implement proper Zod validation
 - Handle hydration properly
 - Use URL state for shareable data
 
+## URL State Patterns
+- Use nuqs for all URL state management
+- Implement proper type safety with TypeScript
+- Use proper parameter parsing
+- Keep URL parameters clean and minimal
+- Implement proper state serialization
+- Use proper default values
+- Handle URL updates properly
+- Implement proper error handling
+- Use proper state initialization
+- Keep proper documentation
+  
+## Zustand Store Patterns
+- Create stores using proper TypeScript types
+- Implement proper store slicing
+- Use proper middleware composition
+- Keep actions colocated with state
+- Implement proper store persistence
+- Use proper store initialization
+- Handle hydration properly
+- Implement proper error handling
+- Use proper devtools integration
+- Keep proper store documentation
+  
 ## Error Handling and Validation
 - Use Zod for all runtime validation
 - Implement proper error boundaries

@@ -36,13 +36,48 @@ globs:
 
 ## State Management
 - Use Server Components state by default
-- Implement URL state with searchParams
+- Implement URL state with nuqs:
+  - Create type-safe URL parameters
+  - Use proper parameter parsing
+  - Implement proper serialization
+  - Keep URL state minimal and clean
+  - Use proper caching strategies
+  - Handle updates efficiently
+  - Implement proper error handling
 - Use React Query for server state
+- Use Zustand for client state management:
+  - Create separate stores by domain
+  - Implement proper store composition
+  - Use middleware effectively
+  - Keep stores small and focused
+  - Implement proper persistence
+  - Use proper TypeScript types
+  - Handle hydration correctly
 - Keep client state minimal
 - Use proper form state
 - Implement proper validation
 - Keep proper error handling
 - Use proper loading states
+
+## URL State Architecture
+- Organize URL parameters by feature
+- Keep URL parameters clean and minimal
+- Implement proper parameter validation
+- Use proper parameter serialization
+- Keep proper parameter documentation
+- Implement proper parameter testing
+- Use proper parameter initialization
+- Keep proper error handling
+  
+## Store Architecture
+- Organize stores by feature
+- Keep store interfaces clean
+- Implement proper store splitting
+- Use proper store composition
+- Keep proper store documentation
+- Implement proper store testing
+- Use proper store initialization
+- Keep proper store persistence
 
 ## Authentication
 - Use Auth.js (v5) for authentication
