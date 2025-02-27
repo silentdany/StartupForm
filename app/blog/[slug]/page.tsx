@@ -1401,10 +1401,11 @@ interface ArticleWithSlug extends Article {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   // Get the article data
-  const article = articles[params.slug]
+  const { slug } = await params
+  const article = articles[slug]
 
   // Handle 404 if article not found
   if (!article) {
@@ -1441,8 +1442,13 @@ export async function generateMetadata({
   }
 }
 
-export default function BlogArticle({ params }: { params: { slug: string } }) {
-  const article = articles[params.slug]
+export default async function BlogArticle({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params
+  const article = articles[slug]
 
   // Handle 404 if article not found
   if (!article) {
@@ -1471,7 +1477,7 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://charactercounter.example.com/blog/${params.slug}`,
+      '@id': `https://charactercounter.example.com/blog/${slug}`,
     },
   }
 
