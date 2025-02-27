@@ -21,7 +21,6 @@ interface SocialItem extends NavigationItem {
 const navigation: {
   features: NavigationItem[]
   resources: NavigationItem[]
-  categories: NavigationItem[]
   popular: NavigationItem[]
   legal: NavigationItem[]
   social: SocialItem[]
