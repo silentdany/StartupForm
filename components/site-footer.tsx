@@ -25,7 +25,7 @@ const navigation: {
   social: SocialItem[]
 } = {
   features: [{ name: 'IndiesReadIt', href: 'https://indiesread.it' }],
-  resources: [{ name: 'Blog', href: '#' }],
+  resources: [{ name: 'Blog', href: '/blog' }],
   legal: [
     { name: 'Privacy', href: '/privacy' },
     { name: 'Terms', href: '/terms' },
@@ -129,15 +129,13 @@ export function SiteFooter() {
               <ul role="list" className="mt-4 space-y-4">
                 {navigation.resources.map((item) => (
                   <li key={item.name}>
-                    <span
-                      className="text-muted-foreground/50 inline-flex cursor-not-allowed items-center text-sm"
-                      title="Coming soon"
+                    <Link
+                      href={item.href}
+                      className="text-muted-foreground hover:text-foreground text-sm"
+                      rel="noopener noreferrer"
                     >
                       {item.name}
-                      <span className="bg-muted-foreground/10 text-muted-foreground/70 ml-2 rounded px-1.5 py-0.5 text-xs">
-                        Soon
-                      </span>
-                    </span>
+                    </Link>
                   </li>
                 ))}
               </ul>

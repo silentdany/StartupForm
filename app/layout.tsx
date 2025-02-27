@@ -19,9 +19,66 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Character Counter Pro',
+  title: {
+    default: 'Character Counter Pro | Professional Text Analysis Tool',
+    template: '%s | Character Counter Pro',
+  },
   description:
-    'Professional online character counter tool with real-time counting for characters, words, sentences, and paragraphs.',
+    'Professional online character counter tool with real-time counting for characters, words, sentences, and paragraphs. Perfect for writers, students, and social media users.',
+  keywords: [
+    'character counter',
+    'word counter',
+    'text analysis',
+    'sentence counter',
+    'paragraph counter',
+    'reading time calculator',
+    'free text tools',
+    'online text analysis',
+  ],
+  authors: [
+    {
+      name: 'Character Counter Pro Team',
+    },
+  ],
+  creator: 'Character Counter Pro',
+  publisher: 'Character Counter Pro',
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || 'https://charactercounter.example.com'
+  ),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    title: 'Character Counter Pro | Professional Text Analysis Tool',
+    description:
+      'Professional online character counter tool with real-time counting for characters, words, sentences, and paragraphs.',
+    siteName: 'Character Counter Pro',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Character Counter Pro | Professional Text Analysis Tool',
+    description:
+      'Professional online character counter tool with real-time counting.',
+  },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
+  },
 }
 
 export default function RootLayout({

@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import {
   Book,
   Clock,
@@ -23,13 +22,6 @@ interface ReadingTimeProps {
 }
 
 export default function ReadingTime({ wordCount }: ReadingTimeProps) {
-  const [isVisible, setIsVisible] = useState(false)
-
-  // Animation when component mounts
-  useEffect(() => {
-    setIsVisible(true)
-  }, [])
-
   // Calculate various times
   const readingTimeMinutes = Math.max(1, Math.ceil(wordCount / 200)) // Average reading speed: 200 words per minute
 
@@ -71,9 +63,7 @@ export default function ReadingTime({ wordCount }: ReadingTimeProps) {
   }
 
   return (
-    <Card
-      className={`transition-all duration-500 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
-    >
+    <Card>
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center text-xl">
           Reading & Content Time
