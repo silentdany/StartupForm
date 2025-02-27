@@ -1,12 +1,10 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { ThemeProvider } from 'next-themes'
 
 import './globals.css'
 
-import { Providers } from '@/app/providers'
-
 import { SiteFooter } from '@/components/site-footer'
-import { SiteHeader } from '@/components/site-header'
 import { cn } from '@/lib/utils'
 
 const geistSans = Geist({
@@ -21,9 +19,9 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Acme Inc. - Revolutionary SaaS Platform',
+  title: 'Character Counter Pro',
   description:
-    'Transform your business with our revolutionary platform. Streamline workflows, boost productivity, and scale efficiently.',
+    'Professional online character counter tool with real-time counting for characters, words, sentences, and paragraphs.',
 }
 
 export default function RootLayout({
@@ -37,14 +35,20 @@ export default function RootLayout({
         className={cn(
           geistSans.className,
           geistMono.variable,
-          'flex min-h-svh flex-col antialiased'
+          'flex min-h-svh flex-col items-center justify-center antialiased'
         )}
       >
-        <Providers>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <main className="flex w-full flex-col items-center justify-center">
+            {children}
+          </main>
           <SiteFooter />
-        </Providers>
+        </ThemeProvider>
       </body>
     </html>
   )

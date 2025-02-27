@@ -1,313 +1,126 @@
-import { auth } from "@/auth"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Check, ArrowRight, Zap, Shield, Sparkles, BarChart, X } from "lucide-react"
-import Link from "next/link"
+// import { Suspense } from 'react'
+import type { Metadata } from 'next'
+import { Text } from 'lucide-react'
 
-const pricing = [
-  {
-    name: "Hobby",
-    description: "Perfect for side projects and experiments.",
-    price: "Free",
-    features: [
-      "Up to 3 projects",
-      "Basic analytics",
-      "Community support",
-      "1GB storage",
-    ],
-    limitations: [
-      "No custom domain",
-      "No priority support",
-      "Limited API calls",
-    ],
-  },
-  {
-    name: "Pro",
-    description: "For serious developers and small teams.",
-    price: "$19",
-    features: [
-      "Unlimited projects",
-      "Advanced analytics",
-      "Priority support",
-      "10GB storage",
-      "Custom domain",
-      "API access",
-      "Team collaboration",
-    ],
-    limitations: [
-      "No enterprise features",
-    ],
-  },
-  {
-    name: "Enterprise",
-    description: "For large teams with custom needs.",
-    price: "Custom",
-    features: [
-      "Everything in Pro",
-      "Unlimited storage",
-      "24/7 phone support",
-      "Custom integrations",
-      "SLA guarantee",
-      "Dedicated account manager",
-      "On-premise deployment",
-    ],
-    limitations: [],
-  },
-]
+// import AdBanner from '@/components/ads/ad-banner'
+import CharacterCounter from '@/components/character-counter/counter'
+import { ThemeToggle } from '@/components/theme-toggle'
 
-const testimonials = [
-  {
-    quote: "This platform has completely transformed how we handle our workflow.",
-    author: "Sarah Johnson",
-    role: "CTO at TechCorp",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=1",
+export const metadata: Metadata = {
+  title: 'Character Counter Pro | Count Characters, Words, and More',
+  description:
+    'Professional online character counter tool with real-time character, word, sentence, and paragraph counting. Perfect for Twitter, essays, and social media posts.',
+  keywords:
+    'character counter pro, word counter, text counter, online character count, character limit checker, twitter character count, social media character limit',
+  openGraph: {
+    title: 'Character Counter Pro | Count Characters, Words, and More',
+    description:
+      'Professional online character counter tool with real-time character, word, sentence, and paragraph counting. Perfect for Twitter, essays, and social media posts.',
+    type: 'website',
   },
-  {
-    quote: "The best investment we've made in our development process.",
-    author: "Michael Chang",
-    role: "Lead Developer at StartupX",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=2",
-  },
-  {
-    quote: "Incredible features and even better support team.",
-    author: "Emily Rodriguez",
-    role: "Product Manager at InnovateCo",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=3",
-  },
-]
+}
 
-export default async function Home() {
-  const session = await auth()
-
+export default function Home() {
   return (
-    <div className="flex flex-col min-h-svh">
-      {/* Hero Section */}
-      <section className="relative">
-        <div className="container mx-auto px-4 py-20 lg:py-32">
-          <div className="flex flex-col items-center text-center gap-8 max-w-3xl mx-auto">
-            <div className="inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm">
-              🚀 Announcing our $10M Series A <ArrowRight className="ml-1 h-4 w-4" />
-            </div>
-            <h1 className="text-4xl font-bold lg:text-6xl">
-              Transform Your Business with Our{" "}
-              <span className="text-primary">Revolutionary Platform</span>
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-[42rem] leading-normal">
-              Streamline your workflow, boost productivity, and scale your business with our all-in-one solution.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              {session ? (
-                <Button asChild size="lg">
-                  <Link href="/dashboard">Go to Dashboard</Link>
-                </Button>
-              ) : (
-                <>
-                  <Button asChild size="lg">
-                    <Link href="/login">Get Started</Link>
-                  </Button>
-                  <Button variant="outline" size="lg">
-                    <a href="#pricing">View Pricing</a>
-                  </Button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
+    <div className="relative container px-4 py-8 sm:px-6 lg:px-8">
+      <div className="absolute top-2 right-2 z-10">
+        <ThemeToggle />
+      </div>
 
-      {/* Features Section */}
-      <section id="features" className="border-t bg-muted/40">
-        <div className="container mx-auto px-4 py-20">
-          <div className="flex flex-col items-center text-center gap-4 mb-16">
-            <h2 className="text-3xl font-bold">Everything you need to succeed</h2>
-            <p className="text-muted-foreground max-w-[58rem]">
-              Our platform provides all the tools you need to manage and grow your business efficiently.
-            </p>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <Card>
-              <CardHeader>
-                <Zap className="h-10 w-10 text-primary mb-2" />
-                <CardTitle>Lightning Fast</CardTitle>
-                <CardDescription>Experience blazing fast performance with our optimized infrastructure.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {["99.9% uptime", "Global CDN", "Edge computing"].map((feature) => (
-                    <li key={feature} className="flex items-center">
-                      <Check className="h-4 w-4 text-primary mr-2" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <Shield className="h-10 w-10 text-primary mb-2" />
-                <CardTitle>Enterprise Security</CardTitle>
-                <CardDescription>Bank-grade security to protect your sensitive data.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {["SOC2 compliant", "End-to-end encryption", "2FA authentication"].map((feature) => (
-                    <li key={feature} className="flex items-center">
-                      <Check className="h-4 w-4 text-primary mr-2" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <Sparkles className="h-10 w-10 text-primary mb-2" />
-                <CardTitle>AI-Powered</CardTitle>
-                <CardDescription>Leverage the power of AI to automate your workflows.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {["Smart automation", "Predictive analytics", "Custom AI models"].map((feature) => (
-                    <li key={feature} className="flex items-center">
-                      <Check className="h-4 w-4 text-primary mr-2" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
+      <div className="flex flex-col items-center justify-center">
+        <div className="mb-2 flex items-center gap-2">
+          <Text className="text-primary h-8 w-8" aria-hidden="true" />
+          <h1 className="text-3xl font-bold">
+            Character Counter <span className="text-primary">Pro</span>
+          </h1>
         </div>
-      </section>
+        <p className="text-muted-foreground mb-6 text-center">
+          Count characters, words, sentences and more as you type
+        </p>
+      </div>
 
-      {/* Stats Section */}
-      <section className="border-t">
-        <div className="container mx-auto px-4 py-20">
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {[
-              { number: "10k+", label: "Active Users" },
-              { number: "200+", label: "Integrations" },
-              { number: "99.9%", label: "Uptime SLA" },
-              { number: "24/7", label: "Support" },
-            ].map((stat) => (
-              <Card key={stat.label} className="text-center">
-                <CardHeader>
-                  <CardTitle className="text-4xl font-bold">{stat.number}</CardTitle>
-                  <CardDescription>{stat.label}</CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Top Ad Banner */}
+      {/* <Suspense fallback={<div className="bg-muted h-12 animate-pulse" />}>
+        <AdBanner position="top" />
+      </Suspense> */}
 
-      {/* Pricing Section */}
-      <section id="pricing" className="border-t bg-muted/40">
-        <div className="container mx-auto px-4 py-20">
-          <div className="flex flex-col items-center text-center gap-4 mb-16">
-            <h2 className="text-3xl font-bold">Simple, transparent pricing</h2>
-            <p className="text-muted-foreground max-w-[58rem]">
-              Choose the perfect plan for your needs. No hidden fees.
-            </p>
-          </div>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {pricing.map((plan) => (
-              <Card key={plan.name} className="flex flex-col">
-                <CardHeader>
-                  <CardTitle>{plan.name}</CardTitle>
-                  <CardDescription>{plan.description}</CardDescription>
-                  <div className="mt-4">
-                    <span className="text-4xl font-bold">{plan.price}</span>
-                    {plan.price !== "Custom" && <span className="text-muted-foreground">/month</span>}
-                  </div>
-                </CardHeader>
-                <CardContent className="flex-1 flex flex-col">
-                  <div className="space-y-4 flex-1">
-                    <div>
-                      <p className="font-medium mb-2">Features</p>
-                      <ul className="space-y-2">
-                        {plan.features.map((feature) => (
-                          <li key={feature} className="flex items-center text-sm">
-                            <Check className="h-4 w-4 text-primary mr-2" />
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    {plan.limitations.length > 0 && (
-                      <div>
-                        <p className="font-medium mb-2">Limitations</p>
-                        <ul className="space-y-2">
-                          {plan.limitations.map((limitation) => (
-                            <li key={limitation} className="flex items-center text-sm text-muted-foreground">
-                              <X className="h-4 w-4 mr-2" />
-                              {limitation}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                  <Button className="mt-8 w-full" variant={plan.name === "Pro" ? "default" : "outline"}>
-                    {plan.price === "Custom" ? "Contact Sales" : "Get Started"}
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Main Character Counter Component */}
+      <CharacterCounter />
 
-      {/* Testimonials */}
-      <section id="testimonials" className="border-t">
-        <div className="container mx-auto px-4 py-20">
-          <div className="flex flex-col items-center text-center gap-4 mb-16">
-            <h2 className="text-3xl font-bold">Loved by developers worldwide</h2>
-            <p className="text-muted-foreground max-w-[58rem]">
-              Don&apos;t just take our word for it. Here&apos;s what our users have to say.
-            </p>
-          </div>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {testimonials.map((testimonial) => (
-              <Card key={testimonial.author} className="flex flex-col">
-                <CardHeader>
-                  <div className="flex items-center gap-4">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.author}
-                      className="h-12 w-12 rounded-full"
-                    />
-                    <div>
-                      <CardTitle className="text-base">{testimonial.author}</CardTitle>
-                      <CardDescription>{testimonial.role}</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">&quot;{testimonial.quote}&quot;</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Bottom Ad Banner */}
+      {/* <Suspense fallback={<div className="bg-muted h-12 animate-pulse" />}>
+        <AdBanner position="bottom" />
+      </Suspense> */}
 
-      {/* CTA Section */}
-      <section className="border-t bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 py-20">
-          <div className="flex flex-col items-center text-center gap-8 max-w-2xl mx-auto">
-            <BarChart className="h-16 w-16" />
-            <h2 className="text-3xl font-bold">Ready to get started?</h2>
-            <p className="text-primary-foreground/80">
-              Join thousands of satisfied customers who are already using our platform.
-            </p>
-            {!session && (
-              <Button size="lg" variant="secondary" asChild>
-                <Link href="/login">Start Your Free Trial</Link>
-              </Button>
-            )}
-          </div>
-        </div>
+      {/* SEO Content */}
+      <section className="prose prose-sm dark:prose-invert mt-12 max-w-none">
+        <h2 className="mb-4 text-2xl font-semibold">
+          Professional Online Character Counter Tool
+        </h2>
+        <p>
+          Character Counter{' '}
+          <span className="text-primary font-medium">Pro</span> provides instant
+          character count & word count statistics for text. It reports the
+          number of characters with spaces, characters without spaces, words,
+          sentences, paragraphs, and social media character limits. Perfect for
+          writers, students, and professionals who need to stay within specific
+          character limits.
+        </p>
+
+        <h3 className="mt-6 mb-3 text-xl font-semibold">
+          Why Choose Character Counter Pro?
+        </h3>
+        <ul className="list-disc space-y-2 pl-5">
+          <li>
+            <strong>Accurate Counting:</strong> Precisely count characters,
+            words, sentences, and paragraphs
+          </li>
+          <li>
+            <strong>Social Media Limits:</strong> Check your text against
+            popular platform character limits
+          </li>
+          <li>
+            <strong>Reading Time:</strong> Estimate how long it takes to read
+            your content
+          </li>
+          <li>
+            <strong>Professional Analysis:</strong> Get insights on text
+            complexity and readability
+          </li>
+          <li>
+            <strong>SEO-Friendly:</strong> Optimize your content length for
+            search engines
+          </li>
+          <li>
+            <strong>No Registration Required:</strong> Use all basic features
+            without signing up
+          </li>
+        </ul>
+
+        <h3 className="mt-6 mb-3 text-xl font-semibold">
+          Common Character Limits
+        </h3>
+        <ul className="list-disc space-y-2 pl-5">
+          <li>
+            <strong>Twitter/X:</strong> 280 characters
+          </li>
+          <li>
+            <strong>SMS:</strong> 160 characters
+          </li>
+          <li>
+            <strong>Instagram:</strong> 2,200 characters for captions
+          </li>
+          <li>
+            <strong>Facebook:</strong> 63,206 characters for posts
+          </li>
+          <li>
+            <strong>LinkedIn:</strong> 700 characters for posts, 3,000 for
+            articles
+          </li>
+          <li>
+            <strong>Pinterest:</strong> 500 characters for descriptions
+          </li>
+        </ul>
       </section>
     </div>
   )
