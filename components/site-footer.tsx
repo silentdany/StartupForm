@@ -21,11 +21,31 @@ interface SocialItem extends NavigationItem {
 const navigation: {
   features: NavigationItem[]
   resources: NavigationItem[]
+  categories: NavigationItem[]
+  popular: NavigationItem[]
   legal: NavigationItem[]
   social: SocialItem[]
 } = {
-  features: [{ name: 'IndiesReadIt', href: 'https://indiesread.it' }],
-  resources: [{ name: 'Blog', href: '/blog' }],
+  features: [
+    { name: 'Character Counter', href: '/' },
+    { name: 'IndiesReadIt', href: 'https://indiesread.it' },
+  ],
+  resources: [
+    { name: 'Blog', href: '/blog' },
+    { name: 'Reading Time Calculator', href: '/blog/science-of-reading-time' },
+    {
+      name: 'Email Subject Optimization',
+      href: '/blog/email-subject-line-optimization',
+    },
+  ],
+  popular: [
+    { name: 'Optimal Word Count', href: '/blog/optimal-word-count' },
+    {
+      name: 'Social Media Limits',
+      href: '/blog/social-media-character-limits',
+    },
+    { name: 'Quality vs. Quantity', href: '/blog/content-length-vs-quality' },
+  ],
   legal: [
     { name: 'Privacy', href: '/privacy' },
     { name: 'Terms', href: '/terms' },
@@ -74,8 +94,8 @@ export function SiteFooter() {
         Footer
       </h2>
       <div className="container mx-auto max-w-screen-2xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <div className="xl:grid xl:grid-cols-4 xl:gap-8">
-          <div className="flex flex-col items-center space-y-8 text-center xl:items-start xl:text-left">
+        <div className="xl:grid xl:grid-cols-5 xl:gap-8">
+          <div className="flex flex-col items-center space-y-8 text-center xl:col-span-1 xl:items-start xl:text-left">
             <div className="inline-flex items-center gap-2 font-semibold">
               <Text className="text-primary h-6 w-6" />
               <span>
@@ -106,7 +126,7 @@ export function SiteFooter() {
               ))}
             </div>
           </div>
-          <div className="mt-12 grid grid-cols-3 gap-8 md:grid-cols-3 xl:col-span-3 xl:mt-0">
+          <div className="mt-12 grid grid-cols-2 gap-8 md:grid-cols-4 xl:col-span-4 xl:mt-0">
             <div>
               <h3 className="text-sm font-semibold">Tools</h3>
               <ul role="list" className="mt-4 space-y-4">
@@ -115,8 +135,14 @@ export function SiteFooter() {
                     <Link
                       href={item.href}
                       className="text-muted-foreground hover:text-foreground text-sm"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      target={
+                        item.href.startsWith('http') ? '_blank' : undefined
+                      }
+                      rel={
+                        item.href.startsWith('http')
+                          ? 'noopener noreferrer'
+                          : undefined
+                      }
                     >
                       {item.name}
                     </Link>
@@ -132,7 +158,21 @@ export function SiteFooter() {
                     <Link
                       href={item.href}
                       className="text-muted-foreground hover:text-foreground text-sm"
-                      rel="noopener noreferrer"
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold">Popular Articles</h3>
+              <ul role="list" className="mt-4 space-y-4">
+                {navigation.popular.map((item) => (
+                  <li key={item.name}>
+                    <Link
+                      href={item.href}
+                      className="text-muted-foreground hover:text-foreground text-sm"
                     >
                       {item.name}
                     </Link>
