@@ -7,6 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { appConfig } from '@/lib/config/app-config'
 
 interface SocialMediaLimitsProps {
   currentCount: number
@@ -21,31 +22,8 @@ interface PlatformLimit {
 export default function SocialMediaLimits({
   currentCount,
 }: SocialMediaLimitsProps) {
-  const platforms: PlatformLimit[] = [
-    { name: 'Twitter/X', limit: 280, color: 'bg-blue-400 dark:bg-blue-500' },
-    { name: 'SMS', limit: 160, color: 'bg-green-400 dark:bg-green-500' },
-    {
-      name: 'Instagram Caption',
-      limit: 2200,
-      color: 'bg-pink-400 dark:bg-pink-500',
-    },
-    { name: 'LinkedIn Post', limit: 3000, color: 'bg-sky-400 dark:bg-sky-500' },
-    {
-      name: 'Facebook Post',
-      limit: 63206,
-      color: 'bg-indigo-400 dark:bg-indigo-500',
-    },
-    {
-      name: 'TikTok Caption',
-      limit: 2200,
-      color: 'bg-purple-400 dark:bg-purple-500',
-    },
-    {
-      name: 'Reddit Title',
-      limit: 300,
-      color: 'bg-orange-400 dark:bg-orange-500',
-    },
-  ]
+  // Use platforms from app configuration
+  const platforms: PlatformLimit[] = appConfig.socialMedia.platforms
 
   return (
     <Card>

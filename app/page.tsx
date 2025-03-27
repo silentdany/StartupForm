@@ -6,17 +6,15 @@ import { Text } from 'lucide-react'
 import CharacterCounter from '@/components/character-counter/counter'
 import { CharacterCounterFAQ } from '@/components/faq-section'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { appConfig } from '@/lib/config/app-config'
 
 export const metadata: Metadata = {
-  title: 'Character Counter Pro | Count Characters, Words, and More',
-  description:
-    'Professional online character counter tool with real-time character, word, sentence, and paragraph counting. Perfect for Twitter, essays, and social media posts.',
-  keywords:
-    'character counter pro, word counter, text counter, online character count, character limit checker, twitter character count, social media character limit',
+  title: `${appConfig.name} `,
+  description: appConfig.description,
+  keywords: appConfig.seo.keywords,
   openGraph: {
-    title: 'Character Counter Pro | Count Characters, Words, and More',
-    description:
-      'Professional online character counter tool with real-time character, word, sentence, and paragraph counting. Perfect for Twitter, essays, and social media posts.',
+    title: `${appConfig.name}`,
+    description: appConfig.seo.description,
     type: 'website',
   },
 }
@@ -32,11 +30,11 @@ export default function Home() {
         <div className="mb-2 flex items-center gap-2">
           <Text className="text-primary h-8 w-8" aria-hidden="true" />
           <h1 className="text-3xl font-bold">
-            Character Counter <span className="text-primary">Pro</span>
+            {appConfig.shortName} <span className="text-primary">Pro</span>
           </h1>
         </div>
         <p className="text-muted-foreground mb-6 text-center">
-          Count characters, words, sentences and more as you type
+          {appConfig.description}
         </p>
       </div>
 
@@ -61,7 +59,7 @@ export default function Home() {
             Professional Online Character Counter Tool
           </h2>
           <p className="text-muted-foreground mx-auto max-w-2xl">
-            Character Counter{' '}
+            {appConfig.shortName}{' '}
             <span className="text-primary font-medium">Pro</span> provides
             instant character count & word count statistics for text. It reports
             the number of characters with spaces, characters without spaces,
@@ -72,7 +70,7 @@ export default function Home() {
         {/* Features section */}
         <div>
           <h3 className="mb-6 text-center text-xl font-semibold">
-            Why Choose Character Counter Pro?
+            Why Choose {appConfig.shortName} Pro?
           </h3>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -248,30 +246,25 @@ export default function Home() {
             </div>
 
             <div className="bg-background rounded-lg border p-3 text-center">
-              <div className="text-primary text-lg font-bold">63,206</div>
-              <div className="text-muted-foreground text-sm">Facebook</div>
-            </div>
-
-            <div className="bg-background rounded-lg border p-3 text-center">
               <div className="text-primary text-lg font-bold">3,000</div>
               <div className="text-muted-foreground text-sm">LinkedIn</div>
             </div>
 
             <div className="bg-background rounded-lg border p-3 text-center">
-              <div className="text-primary text-lg font-bold">500</div>
-              <div className="text-muted-foreground text-sm">Pinterest</div>
+              <div className="text-primary text-lg font-bold">63,206</div>
+              <div className="text-muted-foreground text-sm">Facebook</div>
+            </div>
+
+            <div className="bg-background rounded-lg border p-3 text-center">
+              <div className="text-primary text-lg font-bold">300</div>
+              <div className="text-muted-foreground text-sm">Reddit Title</div>
             </div>
           </div>
-
-          <p className="text-muted-foreground mt-4 text-center text-sm">
-            Perfect for writers, students, and professionals who need to stay
-            within specific character limits.
-          </p>
         </div>
-      </section>
 
-      {/* Add the FAQ section at the bottom */}
-      <CharacterCounterFAQ />
+        {/* Frequently Asked Questions */}
+        <CharacterCounterFAQ />
+      </section>
     </div>
   )
 }

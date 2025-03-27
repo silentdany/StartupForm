@@ -5,6 +5,7 @@ import { ThemeProvider } from 'next-themes'
 import './globals.css'
 
 import { SiteFooter } from '@/components/site-footer'
+import { appConfig } from '@/lib/config/app-config'
 import { cn } from '@/lib/utils'
 
 const geistSans = Geist({
@@ -19,49 +20,20 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: {
-    default: 'Character Counter Pro | Professional Text Analysis Tool',
-    template: '%s | Character Counter Pro',
-  },
-  description:
-    'Professional online character counter tool with real-time counting for characters, words, sentences, and paragraphs. Perfect for writers, students, and social media users.',
-  keywords: [
-    'character counter',
-    'word counter',
-    'text analysis',
-    'sentence counter',
-    'paragraph counter',
-    'reading time calculator',
-    'free text tools',
-    'online text analysis',
-  ],
-  authors: [
-    {
-      name: 'Character Counter Pro Team',
-    },
-  ],
-  creator: 'Character Counter Pro',
-  publisher: 'Character Counter Pro',
+  title: appConfig.seo.title,
+  description: appConfig.seo.description,
+  keywords: appConfig.seo.keywords,
+  authors: appConfig.seo.authors,
+  creator: appConfig.seo.creator,
+  publisher: appConfig.seo.publisher,
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || 'https://charactercounter.example.com'
+    process.env.NEXT_PUBLIC_APP_URL || appConfig.url.production
   ),
   alternates: {
     canonical: '/',
   },
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    title: 'Character Counter Pro | Professional Text Analysis Tool',
-    description:
-      'Professional online character counter tool with real-time counting for characters, words, sentences, and paragraphs.',
-    siteName: 'Character Counter Pro',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Character Counter Pro | Professional Text Analysis Tool',
-    description:
-      'Professional online character counter tool with real-time counting.',
-  },
+  openGraph: appConfig.seo.openGraph,
+  twitter: appConfig.seo.twitter,
   viewport: {
     width: 'device-width',
     initialScale: 1,

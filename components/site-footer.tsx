@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Github, LucideIcon, Text } from 'lucide-react'
 
+import { appConfig } from '@/lib/config/app-config'
+
 interface NavigationItem {
   name: string
   href: string
@@ -18,6 +20,7 @@ interface SocialItem extends NavigationItem {
   icon: IconComponent
 }
 
+// Default navigation that can be customized by app-config when needed
 const navigation: {
   features: NavigationItem[]
   resources: NavigationItem[]
@@ -45,10 +48,10 @@ const navigation: {
     },
     { name: 'Quality vs. Quantity', href: '/blog/content-length-vs-quality' },
   ],
-  legal: [
-    { name: 'Privacy', href: '/privacy' },
-    { name: 'Terms', href: '/terms' },
-  ],
+  // Use configuration for footer links if available
+  legal: appConfig.site.footer.links.filter(
+    (link) => link.href.includes('privacy') || link.href.includes('terms')
+  ),
   social: [
     {
       name: 'X',
@@ -98,7 +101,7 @@ export function SiteFooter() {
             <div className="inline-flex items-center gap-2 font-semibold">
               <Text className="text-primary h-6 w-6" />
               <span>
-                Character Counter <span className="text-primary">Pro</span>
+                {appConfig.shortName} <span className="text-primary">Pro</span>
               </span>
             </div>
             <p className="text-muted-foreground max-w-xs text-sm">
@@ -198,7 +201,7 @@ export function SiteFooter() {
         </div>
         <div className="mt-12 border-t pt-8 text-center">
           <p className="text-muted-foreground text-sm">
-            &copy; {currentYear} Character Counter Pro. All rights reserved.
+            &copy; {currentYear} {appConfig.name}. All rights reserved.
           </p>
           <p className="text-muted-foreground mt-2 text-xs">
             <Link href="/sitemap.xml" className="hover:text-foreground">
