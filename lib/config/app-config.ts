@@ -62,6 +62,49 @@ export const appConfig = {
     },
   },
 
+  // Content sections
+  content: {
+    intro: {
+      title: 'Professional Online Character Counter Tool',
+      description:
+        'provides instant character count & word count statistics for text. It reports the number of characters with spaces, characters without spaces, words, sentences, paragraphs, and social media character limits.',
+    },
+    features: [
+      {
+        title: 'Accurate Counting',
+        description:
+          'Precisely count characters, words, sentences, and paragraphs',
+        icon: 'text',
+      },
+      {
+        title: 'Social Media Limits',
+        description:
+          'Check your text against popular platform character limits',
+        icon: 'globe',
+      },
+      {
+        title: 'Reading Time',
+        description: 'Estimate how long it takes to read your content',
+        icon: 'clock',
+      },
+      {
+        title: 'Professional Analysis',
+        description: 'Get insights on text complexity and readability',
+        icon: 'fileText',
+      },
+      {
+        title: 'SEO-Friendly',
+        description: 'Optimize your content length for search engines',
+        icon: 'star',
+      },
+      {
+        title: 'No Registration',
+        description: 'Use all basic features without signing up',
+        icon: 'userPlus',
+      },
+    ],
+  },
+
   // Social media limits for the counter app
   // Remove or customize this section for different app types
   socialMedia: {
