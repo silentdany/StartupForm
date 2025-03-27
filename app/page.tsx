@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { Text } from 'lucide-react'
 
 // import AdBanner from '@/components/ads/ad-banner'
-import CharacterCounter from '@/components/character-counter/counter'
 import { CharacterCounterFAQ } from '@/components/faq-section'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { appConfig } from '@/lib/config/app-config'
@@ -44,7 +43,72 @@ export default function Home() {
       </Suspense> */}
 
       {/* Main Character Counter Component */}
-      <CharacterCounter />
+      <div className="w-full">
+        <div className="bg-card overflow-hidden rounded-lg border shadow-sm">
+          <div className="border-b p-6 pb-4">
+            <h3 className="text-xl font-semibold">Your App Content</h3>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Replace this with your actual app functionality
+            </p>
+          </div>
+
+          <div className="p-6">
+            {/* Main content area */}
+            <div className="space-y-6">
+              {/* Placeholder item 1 */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="bg-muted h-8 w-48 animate-pulse rounded"></div>
+                  <div className="bg-muted h-8 w-24 animate-pulse rounded"></div>
+                </div>
+                <div className="bg-muted h-24 w-full animate-pulse rounded"></div>
+              </div>
+
+              {/* Placeholder item 2 */}
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {[1, 2, 3].map((item) => (
+                  <div key={item} className="rounded-lg border p-4">
+                    <div className="bg-muted mb-3 h-6 w-36 animate-pulse rounded"></div>
+                    <div className="bg-muted mb-2 h-4 w-full animate-pulse rounded"></div>
+                    <div className="bg-muted mb-2 h-4 w-3/4 animate-pulse rounded"></div>
+                    <div className="bg-muted h-4 w-5/6 animate-pulse rounded"></div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Placeholder item 3 */}
+              <div className="flex flex-col gap-4 sm:flex-row">
+                <div className="bg-muted h-48 w-full animate-pulse rounded-lg sm:w-64"></div>
+                <div className="flex-1 space-y-3">
+                  <div className="bg-muted h-6 w-3/4 animate-pulse rounded"></div>
+                  <div className="bg-muted h-4 w-full animate-pulse rounded"></div>
+                  <div className="bg-muted h-4 w-full animate-pulse rounded"></div>
+                  <div className="bg-muted h-4 w-2/3 animate-pulse rounded"></div>
+                </div>
+              </div>
+
+              {/* Action buttons */}
+              <div className="mt-6 flex justify-end space-x-2">
+                <div className="bg-muted h-9 w-24 animate-pulse rounded"></div>
+                <div className="bg-primary/20 h-9 w-24 animate-pulse rounded"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Secondary content area */}
+        <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+          {[1, 2, 3].map((item) => (
+            <div key={item} className="bg-card rounded-lg border p-4 shadow-sm">
+              <div className="bg-muted mb-3 h-5 w-24 animate-pulse rounded"></div>
+              <div className="bg-muted h-12 w-full animate-pulse rounded"></div>
+              <div className="mt-3 flex justify-end">
+                <div className="bg-muted h-8 w-20 animate-pulse rounded"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Bottom Ad Banner */}
       {/* <Suspense fallback={<div className="bg-muted h-12 animate-pulse" />}>
