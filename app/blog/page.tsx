@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Calendar, Clock, Text } from 'lucide-react'
+import { ArrowRight, Calendar, Clock } from 'lucide-react'
 
 import { appConfig } from '@/lib/config/app-config'
+import { BlogPost, getAllBlogPosts } from '@/lib/utils/markdown'
 
 export const metadata: Metadata = {
   title: appConfig.blog.metadata.title,
@@ -15,23 +16,9 @@ export const metadata: Metadata = {
   },
 }
 
-interface BlogPost {
-  id: string
-  title: string
-  description: string
-  date: string
-  readTime: string
-  slug: string
-  image: string
-  category: string
-  excerpt: string
-  featured?: boolean
-  author: string
-}
-
 export default function BlogPage() {
-  // Use blog posts from app configuration
-  const blogPosts: BlogPost[] = appConfig.blog.posts
+  // Use blog posts from markdown files
+  const blogPosts: BlogPost[] = getAllBlogPosts()
 
   // Find the featured post
   const featuredPost = blogPosts.find((post) => post.featured)
@@ -180,94 +167,19 @@ export default function BlogPage() {
         </div>
       </div> */}
 
-      {/* Helpful Resources */}
-      <div className="bg-card rounded-xl border p-6 shadow-sm">
-        <h3 className="mb-4 text-xl font-semibold">Helpful Resources</h3>
-        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-          <Link
-            href="/"
-            className="group bg-background hover:bg-primary/5 flex flex-col items-center rounded-lg border p-4 text-center transition-colors"
-          >
-            <div className="bg-primary/10 mb-3 flex h-12 w-12 items-center justify-center rounded-full">
-              <Text className="text-primary h-6 w-6" />
-            </div>
-            <h4 className="mb-1 font-medium">Character Counter</h4>
-            <p className="text-muted-foreground text-sm">
-              Count characters, words, and sentences instantly
-            </p>
-          </Link>
-          <Link
-            href="/blog/social-media-character-limits"
-            className="group bg-background hover:bg-primary/5 flex flex-col items-center rounded-lg border p-4 text-center transition-colors"
-          >
-            <div className="bg-primary/10 mb-3 flex h-12 w-12 items-center justify-center rounded-full">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-primary h-6 w-6"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9a9 9 0 0 1-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9" />
-              </svg>
-            </div>
-            <h4 className="mb-1 font-medium">Social Media Limits</h4>
-            <p className="text-muted-foreground text-sm">
-              Platform-specific character limits guide
-            </p>
-          </Link>
-          <Link
-            href="/blog/science-of-reading-time"
-            className="group bg-background hover:bg-primary/5 flex flex-col items-center rounded-lg border p-4 text-center transition-colors"
-          >
-            <div className="bg-primary/10 mb-3 flex h-12 w-12 items-center justify-center rounded-full">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-primary h-6 w-6"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
-            </div>
-            <h4 className="mb-1 font-medium">Reading Time</h4>
-            <p className="text-muted-foreground text-sm">
-              Learn how reading time is calculated
-            </p>
-          </Link>
-          <Link
-            href="/blog/email-subject-line-optimization"
-            className="group bg-background hover:bg-primary/5 flex flex-col items-center rounded-lg border p-4 text-center transition-colors"
-          >
-            <div className="bg-primary/10 mb-3 flex h-12 w-12 items-center justify-center rounded-full">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-primary h-6 w-6"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect width="20" height="16" x="2" y="4" rx="2" />
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-              </svg>
-            </div>
-            <h4 className="mb-1 font-medium">Email Optimization</h4>
-            <p className="text-muted-foreground text-sm">
-              Subject line character count best practices
-            </p>
-          </Link>
-        </div>
+      {/* CTA */}
+      <div className="bg-primary/5 rounded-xl border p-8 text-center">
+        <h3 className="mb-2 text-2xl font-bold">Try {appConfig.name}</h3>
+        <p className="text-muted-foreground mx-auto mb-6 max-w-2xl">
+          {appConfig.shortName} {appConfig.content.intro.description}
+        </p>
+        <Link
+          href="/"
+          className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center justify-center rounded-md px-6 py-3 font-medium shadow"
+        >
+          Try {appConfig.name} Free
+          <ArrowRight className="ml-2 h-4 w-4" />
+        </Link>
       </div>
     </div>
   )

@@ -5,44 +5,16 @@ import Script from 'next/script'
 import { ArrowRight, Calendar, ChevronLeft, Clock } from 'lucide-react'
 
 import { appConfig } from '@/lib/config/app-config'
+import {
+  BlogPost,
+  getBlogPostBySlug,
+  getPostWithHtml,
+} from '@/lib/utils/markdown'
 // Create a separate client component for blog styling
 import BlogStyles from './BlogStyles'
 
-// Article data type
-interface Article {
-  title: string
-  description: string
-  date: string
-  author: string
-  readTime: string
-  category: string
-  image: string
-  relatedPosts?: string[]
-  content: string
-}
-
-// Get article from config
-function getArticleFromSlug(slug: string): Article | null {
-  const post = appConfig.blog.posts.find((post) => post.slug === slug)
-  if (!post || !post.content) {
-    return null
-  }
-
-  return {
-    title: post.title,
-    description: post.description,
-    date: post.date,
-    author: post.author,
-    readTime: post.readTime,
-    category: post.category,
-    image: post.image,
-    relatedPosts: post.relatedPosts,
-    content: post.content,
-  }
-}
-
-// Type for an article with its slug
-interface ArticleWithSlug extends Article {
+// Type for an article with its slug explicitly defined
+interface ArticleWithSlug extends BlogPost {
   slug: string
 }
 
@@ -54,7 +26,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   // Get the article data
   const { slug } = await params
-  const article = getArticleFromSlug(slug)
+  const article = getBlogPostBySlug(slug)
 
   // Handle 404 if article not found
   if (!article) {
@@ -97,12 +69,14 @@ export default async function BlogArticle({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const article = getArticleFromSlug(slug)
+  const articleWithHtml = await getPostWithHtml(slug)
 
   // Handle 404 if article not found
-  if (!article) {
+  if (!articleWithHtml) {
     notFound()
   }
+
+  const article = articleWithHtml
 
   // Create structured data for article
   const articleStructuredData = {
@@ -134,25 +108,16 @@ export default async function BlogArticle({
   const relatedArticles: ArticleWithSlug[] = article.relatedPosts
     ? article.relatedPosts
         .map((relatedSlug) => {
-          const relatedPost = appConfig.blog.posts.find(
-            (post) => post.slug === relatedSlug
-          )
+          const relatedPost = getBlogPostBySlug(relatedSlug)
           if (relatedPost) {
             return {
-              title: relatedPost.title,
-              description: relatedPost.description,
-              date: relatedPost.date,
-              author: relatedPost.author,
-              readTime: relatedPost.readTime,
-              category: relatedPost.category,
-              image: relatedPost.image,
-              content: relatedPost.content || '',
-              slug: relatedPost.slug,
+              ...relatedPost,
+              slug: relatedSlug,
             }
           }
           return null
         })
-        .filter((item): item is ArticleWithSlug => item !== null)
+        .filter((post): post is ArticleWithSlug => post !== null)
     : []
 
   return (
@@ -227,10 +192,10 @@ export default async function BlogArticle({
         </header>
 
         {/* Article Content */}
-        <article className="prose prose-slate dark:prose-invert prose-img:rounded-lg prose-headings:scroll-mt-20 prose-a:text-primary prose-p:my-6 prose-headings:mt-10 prose-headings:mb-6 prose-li:my-2 prose-ul:my-6 prose-ol:my-6 prose-blockquote:my-8 prose-figure:my-10 prose-hr:my-10 prose-table:my-8 mx-auto mb-16 max-w-none">
+        <article className="prose prose-slate dark:prose-invert prose-img:rounded-lg prose-headings:font-bold prose-h2:text-2xl prose-h3:text-xl prose-h4:text-lg prose-a:text-primary prose-p:my-4 prose-p:leading-relaxed prose-headings:tracking-tight prose-li:my-1 prose-ul:my-4 prose-ol:my-4 prose-blockquote:my-6 prose-figure:my-8 prose-hr:my-8 prose-table:my-6 mx-auto mb-16 max-w-none">
           <div
             dangerouslySetInnerHTML={{ __html: article.content }}
-            className="space-y-6"
+            className="space-y-4"
           />
         </article>
 
@@ -272,18 +237,15 @@ export default async function BlogArticle({
 
         {/* CTA */}
         <div className="bg-primary/5 rounded-xl border p-8 text-center">
-          <h3 className="mb-2 text-2xl font-bold">
-            Optimize Your Content Length
-          </h3>
+          <h3 className="mb-2 text-2xl font-bold">Try {appConfig.name}</h3>
           <p className="text-muted-foreground mx-auto mb-6 max-w-2xl">
-            Use our free Character Counter Pro tool to ensure your content is
-            the perfect length for your platform and audience.
+            {appConfig.shortName} {appConfig.content.intro.description}
           </p>
           <Link
             href="/"
             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center justify-center rounded-md px-6 py-3 font-medium shadow"
           >
-            Try Character Counter Pro
+            Try {appConfig.name} Free
             <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </div>
