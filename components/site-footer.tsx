@@ -29,24 +29,22 @@ const navigation: {
   social: SocialItem[]
 } = {
   features: [
-    { name: 'Character Counter', href: '/' },
+    { name: appConfig.shortName, href: '/' },
     { name: 'IndiesReadIt', href: 'https://indiesread.it' },
   ],
   resources: [
     { name: 'Blog', href: '/blog' },
-    { name: 'Reading Time Calculator', href: '/blog/science-of-reading-time' },
-    {
-      name: 'Email Subject Optimization',
-      href: '/blog/email-subject-line-optimization',
-    },
+    { name: 'Markdown Style Guide', href: '/blog/markdown-style-guide' },
+    { name: 'Content Analytics', href: '/blog/seo-friendly-content' },
   ],
+  // Popular blog posts (hardcoded since we can't use server components in client components)
   popular: [
     { name: 'Optimal Word Count', href: '/blog/optimal-word-count' },
     {
-      name: 'Social Media Limits',
+      name: 'Social Media Character Limits',
       href: '/blog/social-media-character-limits',
     },
-    { name: 'Quality vs. Quantity', href: '/blog/content-length-vs-quality' },
+    { name: 'SEO-Friendly Content', href: '/blog/seo-friendly-content' },
   ],
   // Use configuration for footer links if available
   legal: appConfig.site.footer.links.filter(
