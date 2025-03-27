@@ -95,19 +95,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {/* Secondary content area */}
-        <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {[1, 2, 3].map((item) => (
-            <div key={item} className="bg-card rounded-lg border p-4 shadow-sm">
-              <div className="bg-muted mb-3 h-5 w-24 animate-pulse rounded"></div>
-              <div className="bg-muted h-12 w-full animate-pulse rounded"></div>
-              <div className="mt-3 flex justify-end">
-                <div className="bg-muted h-8 w-20 animate-pulse rounded"></div>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* Bottom Ad Banner */}
