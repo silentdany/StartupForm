@@ -3,10 +3,11 @@ import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { appConfig } from '@/lib/config/app-config'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Character Counter Pro',
-  description: 'Privacy policy for Character Counter Pro.',
+  title: `Privacy Policy | ${appConfig.name}`,
+  description: `Privacy policy for ${appConfig.name}.`,
 }
 
 export default function PrivacyPage() {
@@ -14,7 +15,7 @@ export default function PrivacyPage() {
     <div className="container max-w-3xl px-4 py-12">
       <Link href="/" className="mb-8 inline-block">
         <Button variant="ghost" size="sm">
-          &larr; Back to Character Counter
+          &larr; Back to {appConfig.shortName}
         </Button>
       </Link>
 
@@ -29,16 +30,16 @@ export default function PrivacyPage() {
 
             <h2 className="text-2xl font-semibold">Overview</h2>
             <p>
-              Character Counter Pro is a simple text analysis tool that respects
-              your privacy. This privacy policy explains how we handle any
+              {appConfig.name} is a simple text analysis tool that respects your
+              privacy. This privacy policy explains how we handle any
               information when you use our website.
             </p>
 
             <h2 className="text-2xl font-semibold">No Data Collection</h2>
             <p>
-              Character Counter Pro does not collect, store, or process any
-              personal data. All text analysis happens directly in your browser,
-              and we do not transmit or store your text on our servers.
+              {appConfig.name} does not collect, store, or process any personal
+              data. All text analysis happens directly in your browser, and we
+              do not transmit or store your text on our servers.
             </p>
 
             <h2 className="text-2xl font-semibold">No Cookies</h2>
@@ -49,7 +50,7 @@ export default function PrivacyPage() {
 
             <h2 className="text-2xl font-semibold">Browser Storage</h2>
             <p>
-              Character Counter Pro does not use browser storage (such as
+              {appConfig.name} does not use browser storage (such as
               localStorage) to persist any data between sessions.
             </p>
 

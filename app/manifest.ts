@@ -1,12 +1,13 @@
 import { MetadataRoute } from 'next'
 
+import { appConfig } from '@/lib/config/app-config'
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Character Counter Pro',
-    short_name: 'CharCounter Pro',
-    description:
-      'Professional online character counter tool with real-time character, word, sentence, and paragraph counting',
-    start_url: '/counter',
+    name: appConfig.name,
+    short_name: `${appConfig.shortName} Pro`,
+    description: appConfig.seo.description,
+    start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
     theme_color: '#000000',
