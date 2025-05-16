@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StartupForm AI Filler</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>StartupForm AI Filler</h1>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-button active" data-tab="startups">My Startups</button>
+      <button class="tab-button" data-tab="form">Fill Form</button>
+      <button class="tab-button" data-tab="settings">Settings</button>
+    </div>
+
+    <div class="tab-content">
+      <!-- Startups Tab -->
+      <div class="tab-pane active" id="startups">
+        <div class="startup-list">
+          <div class="empty-state" id="empty-startups">
+            <p>No startups saved yet. Add your first one!</p>
+            <button id="add-startup-btn" class="primary-btn">Add Startup</button>
+          </div>
+          <div id="startup-items"></div>
+        </div>
+      </div>
+
+      <!-- Fill Form Tab -->
+      <div class="tab-pane" id="form">
+        <div class="form-filler">
+          <select id="startup-select">
+            <option value="">Select a startup</option>
+          </select>
+          <button id="fill-form-btn" class="primary-btn" disabled>Fill Form</button>
+          <div class="status" id="fill-status"></div>
+        </div>
+      </div>
+
+      <!-- Settings Tab -->
+      <div class="tab-pane" id="settings">
+        <div class="settings-form">
+          <div class="setting-item">
+            <label for="ai-key">OpenAI API Key</label>
+            <input type="password" id="ai-key" placeholder="sk-...">
+            <p class="hint">Your API key is stored locally and never shared</p>
+          </div>
+          <button id="save-settings-btn" class="primary-btn">Save Settings</button>
+          <div class="status" id="settings-status"></div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <button id="add-new-startup-btn" class="secondary-btn">Add New Startup</button>
+    </footer>
+  </div>
+
+  <!-- Add/Edit Startup Modal -->
+  <div class="modal" id="startup-modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 id="modal-title">Add New Startup</h2>
+
+      <form id="startup-form">
+        <div class="form-group">
+          <label for="startup-name">Company Name *</label>
+          <input type="text" id="startup-name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="startup-url">Website URL *</label>
+          <input type="url" id="startup-url" required>
+        </div>
+
+        <div class="form-group">
+          <label for="startup-headline">Headline/Tagline *</label>
+          <input type="text" id="startup-headline" required>
+        </div>
+
+        <div class="form-group">
+          <label for="startup-description">Full Description *</label>
+          <textarea id="startup-description" rows="4" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="startup-tags">Tags (comma separated)</label>
+          <input type="text" id="startup-tags" placeholder="SaaS, AI, Fintech">
+        </div>
+
+        <div class="form-group">
+          <label>Social Media</label>
+          <input type="url" id="startup-twitter" placeholder="Twitter URL">
+          <input type="url" id="startup-linkedin" placeholder="LinkedIn URL">
+          <input type="url" id="startup-facebook" placeholder="Facebook URL">
+        </div>
+
+        <div class="form-group">
+          <label for="startup-logo">Logo URL</label>
+          <input type="url" id="startup-logo" placeholder="https://example.com/logo.png">
+        </div>
+
+        <div class="form-group">
+          <label for="startup-screenshots">Screenshot URLs (one per line)</label>
+          <textarea id="startup-screenshots" rows="3" placeholder="https://example.com/screenshot1.png"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="primary-btn">Save Startup</button>
+          <button type="button" class="secondary-btn" id="cancel-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>

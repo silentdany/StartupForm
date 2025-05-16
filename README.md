@@ -1,8 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# StartupForm AI Filler
 
-## Getting Started
+A Chrome extension that helps you save your startup information and automatically fill forms on startup submission websites using AI. This project uses Next.js and the Vercel AI SDK to provide an intuitive interface for managing startup information and leveraging OpenAI's GPT for intelligent form filling.
 
-First, run the development server:
+## Features
+
+- **Save Multiple Startups**: Store information about multiple startups locally in your browser.
+- **Automatic Form Filling**: Uses OpenAI's GPT to analyze form fields and fill them with the appropriate information.
+- **Simple Interface**: Intuitive interface for managing your startup data.
+- **Privacy First**: All your data is stored locally, and your API key is never sent to our servers.
+
+## Repository Structure
+
+- `/public/extension`: Contains the Chrome extension files
+- `/app`: Next.js application files (not used by the extension)
+- `/components`: Reusable React components
+- `/lib`: Utility functions and configuration
+
+## Getting Started with the Extension
+
+### Installation
+
+1. Clone this repository
+2. Open Chrome and go to `chrome://extensions/`
+3. Enable "Developer mode" in the top right
+4. Click "Load unpacked" and select the `public/extension` directory from this repo
+5. The extension should now be installed and visible in your toolbar
+
+### Usage
+
+See the detailed usage instructions in the [extension's README](./public/extension/README.md).
+
+## Development
+
+### Extension Development
+
+The Chrome extension is a standalone application that runs in the browser. To develop it:
+
+1. Make changes to files in the `public/extension` directory
+2. Reload the extension in Chrome by clicking the refresh icon on the extension card
+
+For more information about Chrome extension development, see the [Chrome Extension Documentation](https://developer.chrome.com/docs/extensions/mv3/).
+
+### Next.js Application (Optional)
+
+This repository also contains a Next.js application that can be used for development or as a landing page for the extension.
+
+To run the Next.js development server:
 
 ```bash
 npm run dev
@@ -16,21 +59,17 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Chrome Extensions API**: For building the browser extension
+- **OpenAI API**: For analyzing form fields and determining appropriate values
+- **Next.js**: For the web application
+- **Vercel AI SDK**: For easy integration with AI models
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Contributions are welcome! Please feel free to submit a Pull Request.
