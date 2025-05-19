@@ -12,6 +12,24 @@
   <div class="container">
     <header>
       <h1>StartupForm AI Filler</h1>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
     </header>
 
     <div class="tabs">
@@ -46,6 +64,14 @@
       <!-- Settings Tab -->
       <div class="tab-pane" id="settings">
         <div class="settings-form">
+          <div class="setting-item">
+            <label for="personal-name">Your Name</label>
+            <input type="text" id="personal-name" placeholder="John Doe">
+          </div>
+          <div class="setting-item">
+            <label for="personal-email">Your Email</label>
+            <input type="email" id="personal-email" placeholder="john@example.com">
+          </div>
           <div class="setting-item">
             <label for="ai-key">OpenAI API Key</label>
             <input type="password" id="ai-key" placeholder="sk-...">
@@ -85,8 +111,21 @@
         </div>
 
         <div class="form-group">
+          <label for="startup-short-description">Short Description *</label>
+          <textarea id="startup-short-description" rows="2" maxlength="250" required></textarea>
+          <p class="hint">A brief, compelling description (max 250 characters)</p>
+        </div>
+
+        <div class="form-group">
           <label for="startup-description">Full Description *</label>
           <textarea id="startup-description" rows="4" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="startup-features">Key Features</label>
+          <textarea id="startup-features" rows="4"
+            placeholder="One feature per line, start each with a - or •"></textarea>
+          <p class="hint">List your main features/benefits, one per line (e.g., "- AI-powered recommendations")</p>
         </div>
 
         <div class="form-group">

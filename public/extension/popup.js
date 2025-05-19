@@ -2,6 +2,42 @@
 let currentStartup = null
 let startups = []
 let apiKey = ''
+let personalInfo = {
+  name: '',
+  email: '',
+}
+
+// Theme handling
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme)
+  chrome.storage.local.set({ theme })
+}
+
+function initTheme() {
+  chrome.storage.local.get('theme', ({ theme }) => {
+    if (!theme) {
+      // Check system preference
+      if (
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      ) {
+        theme = 'dark'
+      } else {
+        theme = 'light'
+      }
+    }
+    setTheme(theme)
+  })
+
+  // Listen for system theme changes
+  if (window.matchMedia) {
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', (e) => {
+        setTheme(e.matches ? 'dark' : 'light')
+      })
+  }
+}
 
 // DOM Elements
 const tabButtons = document.querySelectorAll('.tab-button')
@@ -15,6 +51,7 @@ const closeModalBtn = document.querySelector('.close')
 const cancelBtn = document.getElementById('cancel-btn')
 const startupForm = document.getElementById('startup-form')
 const modalTitle = document.getElementById('modal-title')
+const themeToggleBtn = document.getElementById('theme-toggle')
 
 const startupSelect = document.getElementById('startup-select')
 const fillFormBtn = document.getElementById('fill-form-btn')
@@ -24,8 +61,12 @@ const aiKeyInput = document.getElementById('ai-key')
 const saveSettingsBtn = document.getElementById('save-settings-btn')
 const settingsStatus = document.getElementById('settings-status')
 
+const personalNameInput = document.getElementById('personal-name')
+const personalEmailInput = document.getElementById('personal-email')
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme()
   loadStartups()
   loadSettings()
   setupEventListeners()
@@ -42,9 +83,13 @@ function loadStartups() {
 
 // Load settings from storage
 function loadSettings() {
-  chrome.storage.local.get(['apiKey'], (result) => {
+  chrome.storage.local.get(['apiKey', 'personalInfo'], (result) => {
     apiKey = result.apiKey || ''
+    personalInfo = result.personalInfo || { name: '', email: '' }
+
     aiKeyInput.value = apiKey
+    personalNameInput.value = personalInfo.name
+    personalEmailInput.value = personalInfo.email
   })
 }
 
@@ -82,6 +127,13 @@ function setupEventListeners() {
 
   // Save settings
   saveSettingsBtn.addEventListener('click', handleSaveSettings)
+
+  // Theme toggle handler
+  themeToggleBtn.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
+    setTheme(newTheme)
+  })
 }
 
 // Update startups list in the UI
@@ -106,8 +158,8 @@ function updateStartupsList() {
       <h3>${startup.name}</h3>
       <p>${startup.headline}</p>
       <div class="startup-actions">
-        <button class="edit-btn" data-index="${index}">Edit</button>
-        <button class="delete-btn" data-index="${index}">Delete</button>
+        <button class="secondary-btn edit-btn" data-index="${index}">Edit</button>
+        <button class="primary-btn delete-btn" data-index="${index}">Delete</button>
       </div>
     `
 
@@ -136,6 +188,14 @@ function updateStartupSelect() {
     option.textContent = startup.name
     startupSelect.appendChild(option)
   })
+
+  // Auto-select first startup if available
+  if (startups.length > 0) {
+    startupSelect.value = '0'
+    fillFormBtn.disabled = false
+  } else {
+    fillFormBtn.disabled = true
+  }
 }
 
 // Open modal to add a new startup
@@ -156,8 +216,12 @@ function openEditStartupModal(index) {
   document.getElementById('startup-name').value = startup.name || ''
   document.getElementById('startup-url').value = startup.url || ''
   document.getElementById('startup-headline').value = startup.headline || ''
+  document.getElementById('startup-short-description').value =
+    startup.shortDescription || ''
   document.getElementById('startup-description').value =
     startup.description || ''
+  document.getElementById('startup-features').value =
+    featuresToText(startup.features) || ''
   document.getElementById('startup-tags').value = startup.tags || ''
   document.getElementById('startup-twitter').value =
     startup.socialMedia?.twitter || ''
@@ -177,6 +241,24 @@ function closeModal() {
   startupModal.style.display = 'none'
 }
 
+// Format features text into an array
+function formatFeatures(text) {
+  if (!text) return []
+  return text
+    .split('\n')
+    .map((line) => line.trim())
+    .map((line) =>
+      line.startsWith('-') || line.startsWith('•') ? line : `- ${line}`
+    )
+    .filter((line) => line.length > 1)
+}
+
+// Format features array back to text
+function featuresToText(features) {
+  if (!features || !features.length) return ''
+  return features.join('\n')
+}
+
 // Handle startup form submission
 function handleStartupFormSubmit(e) {
   e.preventDefault()
@@ -185,7 +267,10 @@ function handleStartupFormSubmit(e) {
     name: document.getElementById('startup-name').value,
     url: document.getElementById('startup-url').value,
     headline: document.getElementById('startup-headline').value,
+    shortDescription: document.getElementById('startup-short-description')
+      .value,
     description: document.getElementById('startup-description').value,
+    features: formatFeatures(document.getElementById('startup-features').value),
     tags: document.getElementById('startup-tags').value,
     socialMedia: {
       twitter: document.getElementById('startup-twitter').value,
@@ -271,8 +356,12 @@ function handleFillForm() {
 // Handle save settings button click
 function handleSaveSettings() {
   apiKey = aiKeyInput.value.trim()
+  personalInfo = {
+    name: personalNameInput.value.trim(),
+    email: personalEmailInput.value.trim(),
+  }
 
-  chrome.storage.local.set({ apiKey }, () => {
+  chrome.storage.local.set({ apiKey, personalInfo }, () => {
     showStatus(settingsStatus, 'Settings saved successfully!', 'success')
   })
 }

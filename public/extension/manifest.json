@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "StartupForm AI Filler",
+  "version": "1.0.0",
+  "description": "Automatically fill startup submission forms using AI",
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "192": "icons/icon192.png",
+      "512": "icons/icon512.png"
+    }
+  },
+  "permissions": ["activeTab", "storage", "scripting", "contextMenus"],
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "192": "icons/icon192.png",
+    "512": "icons/icon512.png"
+  }
+}
