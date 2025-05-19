@@ -33,31 +33,31 @@
     </header>
 
     <div class="tabs">
-      <button class="tab-button active" data-tab="startups">My Startups</button>
-      <button class="tab-button" data-tab="form">Fill Form</button>
+      <button class="tab-button active" data-tab="form">Fill Form</button>
+      <button class="tab-button" data-tab="startups">My Startups</button>
       <button class="tab-button" data-tab="settings">Settings</button>
     </div>
 
     <div class="tab-content">
-      <!-- Startups Tab -->
-      <div class="tab-pane active" id="startups">
-        <div class="startup-list">
-          <div class="empty-state" id="empty-startups">
-            <p>No startups saved yet. Add your first one!</p>
-            <button id="add-startup-btn" class="primary-btn">Add Startup</button>
-          </div>
-          <div id="startup-items"></div>
-        </div>
-      </div>
-
       <!-- Fill Form Tab -->
-      <div class="tab-pane" id="form">
+      <div class="tab-pane active" id="form">
         <div class="form-filler">
           <select id="startup-select">
             <option value="">Select a startup</option>
           </select>
           <button id="fill-form-btn" class="primary-btn" disabled>Fill Form</button>
           <div class="status" id="fill-status"></div>
+        </div>
+      </div>
+
+      <!-- Startups Tab -->
+      <div class="tab-pane" id="startups">
+        <div class="startup-list">
+          <div class="empty-state" id="empty-startups">
+            <p>No startups saved yet. Add your first one!</p>
+            <button id="add-startup-btn" class="primary-btn">Add Startup</button>
+          </div>
+          <div id="startup-items"></div>
         </div>
       </div>
 
