@@ -1,6 +1,6 @@
 # StartupForm AI Filler
 
-A Chrome extension that helps you save your startup information and automatically fill forms on startup submission websites using AI. This project uses Next.js and the Vercel AI SDK to provide an intuitive interface for managing startup information and leveraging OpenAI's GPT for intelligent form filling.
+A Chrome extension that helps you save your startup information and automatically fill forms on startup submission websites using AI.
 
 ## Features
 
@@ -9,67 +9,65 @@ A Chrome extension that helps you save your startup information and automaticall
 - **Simple Interface**: Intuitive interface for managing your startup data.
 - **Privacy First**: All your data is stored locally, and your API key is never sent to our servers.
 
-## Repository Structure
+## Installation
 
-- `/public/extension`: Contains the Chrome extension files
-- `/app`: Next.js application files (not used by the extension)
-- `/components`: Reusable React components
-- `/lib`: Utility functions and configuration
-
-## Getting Started with the Extension
-
-### Installation
+### Local Development
 
 1. Clone this repository
 2. Open Chrome and go to `chrome://extensions/`
 3. Enable "Developer mode" in the top right
-4. Click "Load unpacked" and select the `public/extension` directory from this repo
+4. Click "Load unpacked" and select the `public/extension` directory
 5. The extension should now be installed and visible in your toolbar
 
-### Usage
+### From Chrome Web Store (Coming Soon)
 
-See the detailed usage instructions in the [extension's README](./public/extension/README.md).
+1. Visit the Chrome Web Store page for StartupForm AI Filler
+2. Click "Add to Chrome"
+3. Follow the installation prompts
 
-## Development
+## Usage
 
-### Extension Development
+1. **Add Your Startup Information**
+   - Click on the extension icon in your toolbar
+   - Navigate to the "My Startups" tab (default)
+   - Click "Add Startup" and fill in your startup information
+   - Save your changes
 
-The Chrome extension is a standalone application that runs in the browser. To develop it:
+2. **Add Your OpenAI API Key**
+   - Go to the "Settings" tab
+   - Enter your OpenAI API key
+   - Click "Save Settings"
 
-1. Make changes to files in the `public/extension` directory
-2. Reload the extension in Chrome by clicking the refresh icon on the extension card
+3. **Fill Forms**
+   - Navigate to a startup submission form website
+   - Click on the extension icon in your toolbar
+   - Go to the "Fill Form" tab
+   - Select your startup from the dropdown
+   - Click "Fill Form" and watch the magic happen
 
-For more information about Chrome extension development, see the [Chrome Extension Documentation](https://developer.chrome.com/docs/extensions/mv3/).
+## How It Works
 
-### Next.js Application (Optional)
+This extension uses OpenAI's GPT model to:
+1. Analyze the form fields on the current page
+2. Match them with your startup data
+3. Intelligently fill the appropriate fields
 
-This repository also contains a Next.js application that can be used for development or as a landing page for the extension.
+The extension looks at labels, placeholders, field names, and more to determine the best matches for each field.
 
-To run the Next.js development server:
+## Privacy
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Your startup information is stored locally in your browser using Chrome's storage API
+- Your OpenAI API key is also stored locally and is only sent directly to OpenAI's servers when filling forms
+- No data is sent to our servers at any time
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contributing
 
-## Technologies Used
-
-- **Chrome Extensions API**: For building the browser extension
-- **OpenAI API**: For analyzing form fields and determining appropriate values
-- **Next.js**: For the web application
-- **Vercel AI SDK**: For easy integration with AI models
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Contributing
+## Contact
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+If you have any questions or feedback, please open an issue on the GitHub repository. 
