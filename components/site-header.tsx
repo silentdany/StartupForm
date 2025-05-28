@@ -1,25 +1,26 @@
-"use client"
+'use client'
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { GalleryVerticalEnd } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { useSession, signOut } from "next-auth/react"
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { GalleryVerticalEnd } from 'lucide-react'
+
+import { ThemeToggle } from '@/components/theme-toggle'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { ThemeToggle } from "@/components/theme-toggle"
+} from '@/components/ui/dropdown-menu'
+import { signOut, useSession } from '@/lib/auth-client'
+import { cn } from '@/lib/utils'
 
 const navigation = [
-  { name: "Features", href: "/#features" },
-  { name: "Pricing", href: "/#pricing" },
-  { name: "Testimonials", href: "/#testimonials" },
+  { name: 'Features', href: '/#features' },
+  { name: 'Pricing', href: '/#pricing' },
+  { name: 'Testimonials', href: '/#testimonials' },
 ]
 
 export function SiteHeader() {
@@ -27,46 +28,49 @@ export function SiteHeader() {
   const { data: session } = useSession()
 
   // Hide on dashboard routes
-  if (pathname?.startsWith("/dashboard")) return null
+  if (pathname?.startsWith('/dashboard')) return null
 
   const isActive = (href: string) => {
-    if (href.startsWith("/#")) {
-      return pathname === "/" && href.endsWith(window.location.hash)
+    if (href.startsWith('/#')) {
+      return pathname === '/' && href.endsWith(window.location.hash)
     }
     return pathname === href
   }
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.startsWith("/#") && pathname === "/") {
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    if (href.startsWith('/#') && pathname === '/') {
       e.preventDefault()
-      const element = document.getElementById(href.split("#")[1])
-      element?.scrollIntoView({ behavior: "smooth" })
+      const element = document.getElementById(href.split('#')[1])
+      element?.scrollIntoView({ behavior: 'smooth' })
       // Update URL without scroll
-      window.history.pushState({}, "", href)
+      window.history.pushState({}, '', href)
     }
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full flex justify-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 w-screen-2xl items-center justify-between">
-        <div className="flex-1 flex justify-center md:justify-start">
+    <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex w-full justify-center border-b backdrop-blur">
+      <div className="w-screen-2xl container flex h-14 items-center justify-between">
+        <div className="flex flex-1 justify-center md:justify-start">
           <Link href="/" className="flex items-center gap-2 font-semibold">
             <GalleryVerticalEnd className="h-6 w-6" />
             <span>Acme Inc.</span>
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden items-center gap-6 md:flex">
           {navigation.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={(e) => handleNavClick(e, item.href)}
               className={cn(
-                "text-sm font-medium transition-colors hover:text-primary",
+                'hover:text-primary text-sm font-medium transition-colors',
                 isActive(item.href)
-                  ? "text-foreground"
-                  : "text-muted-foreground"
+                  ? 'text-foreground'
+                  : 'text-muted-foreground'
               )}
             >
               {item.name}
@@ -74,22 +78,34 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="flex-1 flex items-center justify-center md:justify-end gap-2">
+        <div className="flex flex-1 items-center justify-center gap-2 md:justify-end">
           <ThemeToggle />
           {session ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                <Button
+                  variant="ghost"
+                  className="relative h-8 w-8 rounded-full"
+                >
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={session.user?.image ?? ""} alt={session.user?.name ?? ""} />
-                    <AvatarFallback>{session.user?.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
+                    <AvatarImage
+                      src={session.user?.image ?? ''}
+                      alt={session.user?.name ?? ''}
+                    />
+                    <AvatarFallback>
+                      {session.user?.name?.slice(0, 2).toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuItem className="flex flex-col items-start">
-                  <div className="text-sm font-medium">{session.user?.name}</div>
-                  <div className="text-xs text-muted-foreground">{session.user?.email}</div>
+                  <div className="text-sm font-medium">
+                    {session.user?.name}
+                  </div>
+                  <div className="text-muted-foreground text-xs">
+                    {session.user?.email}
+                  </div>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
@@ -121,4 +137,4 @@ export function SiteHeader() {
       </div>
     </header>
   )
-} 
+}

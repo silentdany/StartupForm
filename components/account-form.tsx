@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
-import { signOut } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -31,6 +30,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
+import { authClient, signOut } from '@/lib/auth-client'
 
 const accountFormSchema = z.object({
   name: z.string().min(2, {
@@ -79,7 +79,7 @@ export function AccountForm({ user }: AccountFormProps) {
       toast.success('Profile updated', {
         description: 'Your profile has been updated successfully.',
       })
-      await signOut({ redirect: false })
+      await authClient.signOut()
       router.refresh()
     },
     onError: () => {
@@ -103,7 +103,7 @@ export function AccountForm({ user }: AccountFormProps) {
       toast.success('Account deleted', {
         description: 'Your account has been permanently deleted.',
       })
-      await signOut({ redirect: false })
+      await signOut()
       router.push('/')
     },
     onError: () => {

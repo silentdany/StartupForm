@@ -1,51 +1,55 @@
-"use client"
+'use client'
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { signIn } from "next-auth/react"
-import { useState } from "react"
-import { useSearchParams } from "next/navigation"
+import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { signIn } from '@/lib/auth-client'
+import { cn } from '@/lib/utils'
 
 export function LoginForm({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"form">) {
+}: React.ComponentPropsWithoutRef<'form'>) {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
   const searchParams = useSearchParams()
-  const from = searchParams.get("from") ?? "/dashboard"
+  const from = searchParams.get('from') ?? '/dashboard'
 
   async function handleGoogleLogin() {
     setIsGoogleLoading(true)
     try {
-      await signIn("google", { callbackUrl: from })
+      await signIn.social({
+        provider: 'google',
+        callbackURL: from,
+      })
     } catch (error) {
       // Oh look, another error to add to the universe's entropy
-      console.error("Google login failed:", error)
+      console.error('Google login failed:', error)
     } finally {
       setIsGoogleLoading(false)
     }
   }
 
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
+    <form className={cn('flex flex-col gap-6', className)} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Login to your account</h1>
-        <p className="text-balance text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm text-balance">
           Enter your email below to login to your account
         </p>
       </div>
       <div className="grid gap-6">
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input 
-            id="email" 
-            type="email" 
-            placeholder="m@example.com" 
-            required 
+          <Input
+            id="email"
+            type="email"
+            placeholder="m@example.com"
+            required
             disabled
-            className="opacity-50 cursor-not-allowed"
+            className="cursor-not-allowed opacity-50"
           />
         </div>
         <div className="grid gap-2">
@@ -63,14 +67,14 @@ export function LoginForm({
         <Button type="submit" disabled className="w-full">
           Login
         </Button>
-        <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-          <span className="relative z-10 bg-background px-2 text-muted-foreground">
+        <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
+          <span className="bg-background text-muted-foreground relative z-10 px-2">
             Or continue with
           </span>
         </div>
-        <Button 
-          variant="outline" 
-          className="w-full" 
+        <Button
+          variant="outline"
+          className="w-full"
           onClick={handleGoogleLogin}
           disabled={isGoogleLoading}
         >
@@ -112,11 +116,11 @@ export function LoginForm({
               />
             </svg>
           )}
-          {isGoogleLoading ? "Loading..." : "Login with Google"}
+          {isGoogleLoading ? 'Loading...' : 'Login with Google'}
         </Button>
       </div>
       <div className="text-center text-sm">
-        Don&apos;t have an account?{" "}
+        Don&apos;t have an account?{' '}
         <a href="#" className="underline underline-offset-4">
           Sign up
         </a>
