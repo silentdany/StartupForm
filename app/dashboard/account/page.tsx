@@ -1,11 +1,14 @@
+import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { auth } from '@/auth'
 
 import { AccountForm } from '@/components/account-form'
 import { DashboardShell } from '@/components/dashboard-shell'
+import { auth } from '@/lib/auth'
 
 export default async function AccountPage() {
-  const session = await auth()
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  })
 
   if (!session?.user) {
     redirect('/login')

@@ -1,7 +1,8 @@
+import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
-import { auth } from '@/auth'
 import { z } from 'zod'
 
+import { auth } from '@/lib/auth'
 import { db } from '@/lib/db'
 
 const patchUserSchema = z.object({
@@ -12,7 +13,9 @@ const patchUserSchema = z.object({
 
 export async function PATCH(req: Request) {
   try {
-    const session = await auth()
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    })
 
     if (!session?.user?.id) {
       return new NextResponse('Unauthorized', { status: 401 })
@@ -42,7 +45,9 @@ export async function PATCH(req: Request) {
 
 export async function DELETE() {
   try {
-    const session = await auth()
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    })
 
     if (!session?.user?.id) {
       return new NextResponse('Unauthorized', { status: 401 })

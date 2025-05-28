@@ -18,8 +18,10 @@ export function LoginForm({
   const from = searchParams.get('from') ?? '/dashboard'
 
   async function handleGoogleLogin() {
+    console.log('handleGoogleLogin')
     setIsGoogleLoading(true)
     try {
+      console.log('signIn.social')
       await signIn.social({
         provider: 'google',
         callbackURL: from,
