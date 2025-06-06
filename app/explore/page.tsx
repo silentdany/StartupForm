@@ -19,6 +19,7 @@ interface Goal {
   userId: string
   cheerCount: number
   isCheeredByUser: boolean
+  flameCount: number
   user: {
     id: string
     name: string

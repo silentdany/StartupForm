@@ -3,7 +3,15 @@
 import { GoalStatus } from '@/types/db'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { format } from 'date-fns'
-import { CheckCircle, Clock, Heart, Target, XCircle } from 'lucide-react'
+import {
+  CheckCircle,
+  Clock,
+  Flame,
+  Heart,
+  MessageCircle,
+  Target,
+  XCircle,
+} from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -26,6 +34,7 @@ interface Goal {
   userId: string
   cheerCount?: number
   isCheeredByUser?: boolean
+  flameCount?: number
   user?: {
     id: string
     name: string
@@ -118,6 +127,57 @@ export function GoalCard({
     },
   })
 
+  const remindMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch(`/api/goals/${goal.id}/remind`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to send reminder')
+      }
+
+      return response.json()
+    },
+    onSuccess: () => {
+      toast.success('Reminder sent! ⏰')
+    },
+    onError: (error: Error) => {
+      toast.error(error.message)
+    },
+  })
+
+  const flameMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch(`/api/goals/${goal.id}/flame`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to send flame')
+      }
+
+      return response.json()
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['public-goals'] })
+      toast.success('Flame sent! 🔥')
+    },
+    onError: (error: Error) => {
+      toast.error(error.message)
+    },
+  })
+
   function getStatusIcon() {
     switch (goal.status) {
       case 'shipped':
@@ -144,6 +204,23 @@ export function GoalCard({
     new Date(goal.targetDate) < new Date() && goal.status === 'active'
   const canCheer = currentUserId && !isOwner && currentUserId !== goal.userId
 
+  // Check if goal is nearing deadline (within 24 hours) for reminders
+  const now = new Date()
+  const targetDate = new Date(goal.targetDate)
+  const timeDiff = targetDate.getTime() - now.getTime()
+  const hoursUntilDeadline = timeDiff / (1000 * 3600)
+  const canRemind =
+    currentUserId &&
+    !isOwner &&
+    goal.status === 'active' &&
+    hoursUntilDeadline <= 24 &&
+    hoursUntilDeadline > 0
+
+  const canFlame =
+    currentUserId &&
+    !isOwner &&
+    (goal.status === 'failed' || (goal.status === 'active' && isOverdue))
+
   return (
     <Card
       className={`${getStatusColor()} ${isOverdue ? 'border-red-300 dark:border-red-700' : ''}`}
@@ -164,9 +241,12 @@ export function GoalCard({
                   {goal.user.name.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <span className="text-muted-foreground text-sm">
+              <a
+                href={`/users/${goal.user.id}`}
+                className="text-muted-foreground hover:text-foreground text-sm hover:underline"
+              >
                 {goal.user.name}
-              </span>
+              </a>
             </div>
           )}
         </div>
@@ -189,6 +269,36 @@ export function GoalCard({
           </div>
 
           <div className="flex items-center gap-2">
+            {/* Remind Button */}
+            {canRemind && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => remindMutation.mutate()}
+                disabled={remindMutation.isPending}
+                className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+              >
+                <MessageCircle className="h-4 w-4" />
+                <span className="ml-1">Remind</span>
+              </Button>
+            )}
+
+            {/* Flame Button */}
+            {canFlame && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => flameMutation.mutate()}
+                disabled={flameMutation.isPending}
+                className="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300"
+              >
+                <Flame className="h-4 w-4" />
+                {goal.flameCount !== undefined && goal.flameCount > 0 && (
+                  <span className="ml-1">{goal.flameCount}</span>
+                )}
+              </Button>
+            )}
+
             {/* Cheer Button */}
             {canCheer && (
               <Button
@@ -210,15 +320,22 @@ export function GoalCard({
             )}
 
             {/* Status display for non-owners */}
-            {!isOwner &&
-              goal.cheerCount !== undefined &&
-              goal.cheerCount > 0 &&
-              !canCheer && (
-                <div className="text-muted-foreground flex items-center gap-1 text-sm">
-                  <Heart className="h-4 w-4" />
-                  <span>{goal.cheerCount}</span>
-                </div>
-              )}
+            {!isOwner && !canCheer && (
+              <div className="flex items-center gap-2">
+                {goal.cheerCount !== undefined && goal.cheerCount > 0 && (
+                  <div className="text-muted-foreground flex items-center gap-1 text-sm">
+                    <Heart className="h-4 w-4" />
+                    <span>{goal.cheerCount}</span>
+                  </div>
+                )}
+                {goal.flameCount !== undefined && goal.flameCount > 0 && (
+                  <div className="text-muted-foreground flex items-center gap-1 text-sm">
+                    <Flame className="h-4 w-4" />
+                    <span>{goal.flameCount}</span>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Owner Action Buttons */}
             {isOwner && goal.status === 'active' && (

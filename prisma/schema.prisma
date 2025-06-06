@@ -8,18 +8,22 @@ datasource db {
 }
 
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean
-  image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
-  role          Role      @default(USER)
-  sessions      Session[]
-  accounts      Account[]
-  goals         Goal[]
-  cheers        Cheer[]
+  id                String     @id
+  name              String
+  email             String
+  emailVerified     Boolean
+  image             String?
+  createdAt         DateTime
+  updatedAt         DateTime
+  role              Role       @default(USER)
+  sessions          Session[]
+  accounts          Account[]
+  goals             Goal[]
+  cheers            Cheer[]
+  sentReminders     Reminder[] @relation("ReminderSender")
+  receivedReminders Reminder[] @relation("ReminderRecipient")
+  sentFlames        Flame[]    @relation("FlameSender")
+  receivedFlames    Flame[]    @relation("FlameRecipient")
 
   @@unique([email])
   @@map("user")
@@ -76,15 +80,17 @@ enum Role {
 }
 
 model Goal {
-  id          String   @id @default(cuid())
+  id          String     @id @default(cuid())
   userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   description String
   targetDate  DateTime
-  status      String   @default("active") // "active", "shipped", "failed"
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  status      String     @default("active") // "active", "shipped", "failed"
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   cheers      Cheer[]
+  reminders   Reminder[]
+  flames      Flame[]
 
   @@map("goal")
 }
@@ -99,4 +105,32 @@ model Cheer {
 
   @@unique([userId, goalId])
   @@map("cheer")
+}
+
+model Reminder {
+  id          String   @id @default(cuid())
+  senderId    String
+  sender      User     @relation("ReminderSender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipientId String
+  recipient   User     @relation("ReminderRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  goalId      String
+  goal        Goal     @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  message     String?
+  createdAt   DateTime @default(now())
+
+  @@map("reminder")
+}
+
+model Flame {
+  id          String   @id @default(cuid())
+  senderId    String
+  sender      User     @relation("FlameSender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipientId String
+  recipient   User     @relation("FlameRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  goalId      String
+  goal        Goal     @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  message     String?
+  createdAt   DateTime @default(now())
+
+  @@map("flame")
 }

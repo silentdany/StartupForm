@@ -26,6 +26,7 @@ export async function GET(request: NextRequest) {
         _count: {
           select: {
             cheers: true,
+            flames: true,
           },
         },
         ...(session && {
@@ -59,6 +60,7 @@ export async function GET(request: NextRequest) {
     const transformedGoals = goals.map((goal) => ({
       ...goal,
       cheerCount: goal._count.cheers,
+      flameCount: goal._count.flames,
       isCheeredByUser: session ? goal.cheers.length > 0 : false,
       // Remove the raw _count and cheers from the response
       _count: undefined,
