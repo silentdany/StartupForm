@@ -135,3 +135,50 @@
 * **Server Components:** Maximize RSC usage. `'use client'` for minimal, necessary client-side logic.
 * **Data Fetching:** `react-query` for all server data operations.
 * **Security:** Basic best practices (input sanitization, CSRF if applicable, auth checks).
+
+## 6. Phase 5: Project Discovery & Advertising Platform
+
+**Additional Features:**
+
+13. **Project Management:**
+    * **Prisma Schema:** `Project` model: `id`, `userId` (FK), `name`, `url`, `image` (optional), `description`, `coupons` (optional), `createdAt`, `updatedAt`.
+    * **Goal-Project Relation:** Update `Goal` model with `projectId` (optional FK to `Project`).
+    * **API Routes:**
+        * `POST /api/projects`: Create new project (auth).
+        * `GET /api/projects`: Get current user's projects (auth).
+        * `GET /api/projects/public`: Get all public projects (paginated).
+        * `GET /api/projects/[projectId]`: Get project details.
+        * `PUT /api/projects/[projectId]`: Update project (auth, owner).
+        * `DELETE /api/projects/[projectId]`: Delete project (auth, owner).
+    * **UI:**
+        * `project-form.tsx` (Shadcn: `Input`, `Textarea`, `FileUpload`, `Button`).
+        * `project-card.tsx` for displaying projects with image, name, description, coupons.
+        * Page (`/projects`) for project discovery.
+        * Page (`/dashboard/projects`) for managing user's projects.
+
+14. **Goal-Project Integration:**
+    * **Enhanced Goal Form:** Add optional project selection dropdown.
+    * **Goal Card Updates:** Display linked project info (name, image, URL) when available.
+    * **Project Analytics:** Show linked goals count and status on project cards.
+
+15. **Project Discovery:**
+    * **Public Projects Page:** Browse all projects with filtering/sorting.
+    * **Project Details Page:** Individual project pages with:
+        * Project info and media
+        * Linked goals (public ones)
+        * User interaction (visit project, use coupons)
+        * Project owner profile link
+    * **Search & Filtering:** By category, status, recency, popularity.
+
+16. **Monetization Features:**
+    * **Coupon System:** Projects can offer discount codes/special offers.
+    * **Traffic Analytics:** Track clicks to project URLs.
+    * **Featured Projects:** Premium placement for paying users (future).
+    * **Project Validation:** Badge system for verified/launched projects.
+
+**Business Value:**
+
+* **Traffic Generation:** Users discover and visit actual projects/products.
+* **Lead Generation:** Projects capture interested users through goals.
+* **Community Building:** Builders support each other's projects.
+* **Revenue Potential:** Commission on sales, featured listings, premium features.

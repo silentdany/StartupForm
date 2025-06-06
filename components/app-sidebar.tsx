@@ -5,6 +5,7 @@ import Link from 'next/link'
 import {
   Command,
   Compass,
+  FolderOpen,
   LifeBuoy,
   Send,
   Settings2,
@@ -38,8 +39,8 @@ const data = {
           url: '/dashboard',
         },
         {
-          title: 'Create Goal',
-          url: '/dashboard',
+          title: 'My Projects',
+          url: '/dashboard/projects',
         },
       ],
     },
@@ -51,6 +52,25 @@ const data = {
         {
           title: 'Public Goals',
           url: '/explore',
+        },
+        {
+          title: 'Projects',
+          url: '/projects',
+        },
+      ],
+    },
+    {
+      title: 'Projects',
+      url: '/dashboard/projects',
+      icon: FolderOpen,
+      items: [
+        {
+          title: 'My Projects',
+          url: '/dashboard/projects',
+        },
+        {
+          title: 'Discover',
+          url: '/projects',
         },
       ],
     },

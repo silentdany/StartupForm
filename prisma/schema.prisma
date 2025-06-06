@@ -24,6 +24,7 @@ model User {
   receivedReminders Reminder[] @relation("ReminderRecipient")
   sentFlames        Flame[]    @relation("FlameSender")
   receivedFlames    Flame[]    @relation("FlameRecipient")
+  projects          Project[]
 
   @@unique([email])
   @@map("user")
@@ -83,6 +84,8 @@ model Goal {
   id          String     @id @default(cuid())
   userId      String
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId   String?
+  project     Project?   @relation(fields: [projectId], references: [id], onDelete: SetNull)
   description String
   targetDate  DateTime
   status      String     @default("active") // "active", "shipped", "failed"
@@ -133,4 +136,20 @@ model Flame {
   createdAt   DateTime @default(now())
 
   @@map("flame")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  url         String?
+  image       String?
+  description String
+  coupons     String? // JSON string for coupon data
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  goals       Goal[]
+
+  @@map("project")
 }

@@ -23,6 +23,16 @@ export async function GET(request: NextRequest) {
             image: true,
           },
         },
+        project: {
+          select: {
+            id: true,
+            name: true,
+            url: true,
+            image: true,
+            description: true,
+            coupons: true,
+          },
+        },
         _count: {
           select: {
             cheers: true,

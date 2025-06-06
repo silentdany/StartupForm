@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -17,6 +17,18 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+
+interface Project {
+  id: string
+  name: string
+}
 
 const goalSchema = z.object({
   description: z
@@ -45,6 +57,7 @@ const goalSchema = z.object({
       const maxDate = new Date(now.getTime() + 2 * 365 * 24 * 60 * 60 * 1000)
       return date <= maxDate
     }, 'Target date cannot be more than 2 years in the future'),
+  projectId: z.string().optional(),
 })
 
 type GoalFormData = z.infer<typeof goalSchema>
@@ -62,12 +75,26 @@ export function GoalForm({ onSuccess }: GoalFormProps) {
     handleSubmit,
     reset,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<GoalFormData>({
     resolver: zodResolver(goalSchema),
   })
 
+  // Fetch user's projects for selection
+  const { data: projects } = useQuery({
+    queryKey: ['projects'],
+    queryFn: async () => {
+      const response = await fetch('/api/projects')
+      if (!response.ok) {
+        throw new Error('Failed to fetch projects')
+      }
+      return response.json()
+    },
+  })
+
   const descriptionValue = watch('description', '')
+  const projectIdValue = watch('projectId', '')
 
   const createGoalMutation = useMutation({
     mutationFn: async (data: GoalFormData) => {
@@ -79,6 +106,7 @@ export function GoalForm({ onSuccess }: GoalFormProps) {
         body: JSON.stringify({
           description: data.description,
           targetDate: new Date(data.targetDate).toISOString(),
+          projectId: data.projectId === 'none' ? null : data.projectId || null,
         }),
       })
 
@@ -156,6 +184,29 @@ export function GoalForm({ onSuccess }: GoalFormProps) {
             <p className="text-muted-foreground text-xs">
               Choose a realistic deadline. You&apos;ll be publicly accountable
               for this!
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="projectId">Project (Optional)</Label>
+            <Select
+              value={projectIdValue}
+              onValueChange={(value) => setValue('projectId', value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Link to a project (optional)" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">No project</SelectItem>
+                {projects?.map((project: Project) => (
+                  <SelectItem key={project.id} value={project.id}>
+                    {project.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-muted-foreground text-xs">
+              Link this goal to one of your projects to showcase your work.
             </p>
           </div>
 

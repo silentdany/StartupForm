@@ -6,7 +6,9 @@ import { format } from 'date-fns'
 import {
   CheckCircle,
   Clock,
+  ExternalLink,
   Flame,
+  FolderOpen,
   Heart,
   MessageCircle,
   Target,
@@ -15,6 +17,7 @@ import {
 import { toast } from 'sonner'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -40,6 +43,14 @@ interface Goal {
     name: string
     image?: string | null
   }
+  project?: {
+    id: string
+    name: string
+    description?: string | null
+    url?: string | null
+    image?: string | null
+    coupons?: string | null
+  } | null
 }
 
 interface GoalCardProps {
@@ -226,16 +237,16 @@ export function GoalCard({
       className={`${getStatusColor()} ${isOverdue ? 'border-red-300 dark:border-red-700' : ''}`}
     >
       <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col space-y-3 sm:flex-row sm:items-start sm:justify-between sm:space-y-0">
           <div className="flex items-center gap-2">
             {getStatusIcon()}
-            <CardTitle className="text-lg">
+            <CardTitle className="text-base sm:text-lg">
               {goal.status.toUpperCase()}
             </CardTitle>
           </div>
           {showUser && goal.user && (
             <div className="flex items-center gap-2">
-              <Avatar className="h-6 w-6">
+              <Avatar className="h-5 w-5 sm:h-6 sm:w-6">
                 <AvatarImage src={goal.user.image || undefined} />
                 <AvatarFallback className="text-xs">
                   {goal.user.name.charAt(0).toUpperCase()}
@@ -250,14 +261,113 @@ export function GoalCard({
             </div>
           )}
         </div>
-        <CardDescription className="text-foreground text-base font-medium">
+        <CardDescription className="text-foreground text-sm font-medium sm:text-base">
           {goal.description}
         </CardDescription>
+
+        {/* Project Showcase */}
+        {goal.project && (
+          <div className="relative mt-4 overflow-hidden rounded-lg border bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20">
+            {/* Background Image with Fade */}
+            {goal.project.image && (
+              <div
+                className="absolute inset-0 bg-cover bg-center opacity-20"
+                style={{
+                  backgroundImage: `url(${goal.project.image})`,
+                  maskImage:
+                    'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0.3) 80%, rgba(0,0,0,0) 100%)',
+                  WebkitMaskImage:
+                    'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0.3) 80%, rgba(0,0,0,0) 100%)',
+                }}
+              />
+            )}
+
+            <div className="relative z-10 p-4">
+              {/* Mobile: Stack vertically, Desktop: Side by side */}
+              <div className="flex flex-col space-y-3 md:flex-row md:items-center md:justify-between md:space-y-0">
+                <div className="flex min-w-0 flex-1 items-center gap-3">
+                  {/* Project Image */}
+                  {goal.project.image ? (
+                    <div className="flex-shrink-0">
+                      <img
+                        src={goal.project.image}
+                        alt={goal.project.name}
+                        className="h-10 w-10 rounded-lg border border-white/20 object-cover shadow-md md:h-12 md:w-12"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-blue-500 shadow-md md:h-12 md:w-12">
+                      <FolderOpen className="h-5 w-5 text-white md:h-6 md:w-6" />
+                    </div>
+                  )}
+
+                  {/* Project Info */}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <h4 className="truncate text-sm font-semibold text-gray-900 md:text-base dark:text-gray-100">
+                        {goal.project.name}
+                      </h4>
+                    </div>
+
+                    {/* Project Description */}
+                    {goal.project.description && (
+                      <p className="line-clamp-1 text-xs text-gray-600 md:line-clamp-2 md:text-sm dark:text-gray-400">
+                        {goal.project.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Action buttons - Stack on mobile */}
+                <div className="flex flex-col space-y-2 md:flex-shrink-0 md:flex-row md:items-center md:space-y-0 md:space-x-2">
+                  {/* Visit Project Button */}
+                  {goal.project.url && (
+                    <Button
+                      size="sm"
+                      variant="default"
+                      className="w-full bg-white/90 text-xs text-gray-900 shadow-md hover:bg-white md:w-auto md:text-sm dark:bg-gray-800/90 dark:text-gray-100 dark:hover:bg-gray-800"
+                      onClick={() => {
+                        if (goal.project?.url) {
+                          window.open(
+                            goal.project.url,
+                            '_blank',
+                            'noopener,noreferrer'
+                          )
+                        }
+                      }}
+                    >
+                      <ExternalLink className="mr-2 h-3 w-3 md:h-4 md:w-4" />
+                      Visit Project
+                    </Button>
+                  )}
+
+                  {/* Coupon/Special Offer */}
+                  {goal.project.coupons && (
+                    <Badge
+                      className="w-full cursor-pointer justify-center bg-amber-100 text-xs text-amber-800 hover:bg-amber-200 md:w-auto md:justify-start dark:bg-amber-900/50 dark:text-amber-200"
+                      onClick={() => {
+                        if (goal.project?.coupons) {
+                          navigator.clipboard.writeText(goal.project.coupons)
+                        }
+                        toast.success('Coupon code copied!')
+                      }}
+                    >
+                      🎁 {goal.project.coupons}
+                    </Badge>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Decorative gradient overlay */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/10 dark:to-black/10" />
+          </div>
+        )}
       </CardHeader>
       <CardContent>
-        <div className="flex items-center justify-between">
-          <div className="text-muted-foreground flex items-center gap-2 text-sm">
-            <Target className="h-4 w-4" />
+        <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+          <div className="text-muted-foreground flex items-center gap-2 text-xs sm:text-sm">
+            <Target className="h-3 w-3 sm:h-4 sm:w-4" />
             <span>
               Target: {format(new Date(goal.targetDate), 'MMM d, yyyy h:mm a')}
             </span>
@@ -268,7 +378,7 @@ export function GoalCard({
             )}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {/* Remind Button */}
             {canRemind && (
               <Button
@@ -276,10 +386,10 @@ export function GoalCard({
                 variant="outline"
                 onClick={() => remindMutation.mutate()}
                 disabled={remindMutation.isPending}
-                className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                className="text-xs text-blue-600 hover:text-blue-700 sm:text-sm dark:text-blue-400 dark:hover:text-blue-300"
               >
-                <MessageCircle className="h-4 w-4" />
-                <span className="ml-1">Remind</span>
+                <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="ml-1 hidden sm:inline">Remind</span>
               </Button>
             )}
 
@@ -290,9 +400,9 @@ export function GoalCard({
                 variant="outline"
                 onClick={() => flameMutation.mutate()}
                 disabled={flameMutation.isPending}
-                className="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300"
+                className="text-xs text-orange-600 hover:text-orange-700 sm:text-sm dark:text-orange-400 dark:hover:text-orange-300"
               >
-                <Flame className="h-4 w-4" />
+                <Flame className="h-3 w-3 sm:h-4 sm:w-4" />
                 {goal.flameCount !== undefined && goal.flameCount > 0 && (
                   <span className="ml-1">{goal.flameCount}</span>
                 )}
@@ -306,12 +416,12 @@ export function GoalCard({
                 variant={goal.isCheeredByUser ? 'default' : 'outline'}
                 onClick={() => cheerMutation.mutate()}
                 disabled={cheerMutation.isPending}
-                className={
+                className={`text-xs sm:text-sm ${
                   goal.isCheeredByUser ? 'bg-pink-600 hover:bg-pink-700' : ''
-                }
+                }`}
               >
                 <Heart
-                  className={`h-4 w-4 ${goal.isCheeredByUser ? 'fill-current' : ''}`}
+                  className={`h-3 w-3 sm:h-4 sm:w-4 ${goal.isCheeredByUser ? 'fill-current' : ''}`}
                 />
                 {goal.cheerCount !== undefined && goal.cheerCount > 0 && (
                   <span className="ml-1">{goal.cheerCount}</span>
@@ -323,14 +433,14 @@ export function GoalCard({
             {!isOwner && !canCheer && (
               <div className="flex items-center gap-2">
                 {goal.cheerCount !== undefined && goal.cheerCount > 0 && (
-                  <div className="text-muted-foreground flex items-center gap-1 text-sm">
-                    <Heart className="h-4 w-4" />
+                  <div className="text-muted-foreground flex items-center gap-1 text-xs sm:text-sm">
+                    <Heart className="h-3 w-3 sm:h-4 sm:w-4" />
                     <span>{goal.cheerCount}</span>
                   </div>
                 )}
                 {goal.flameCount !== undefined && goal.flameCount > 0 && (
-                  <div className="text-muted-foreground flex items-center gap-1 text-sm">
-                    <Flame className="h-4 w-4" />
+                  <div className="text-muted-foreground flex items-center gap-1 text-xs sm:text-sm">
+                    <Flame className="h-3 w-3 sm:h-4 sm:w-4" />
                     <span>{goal.flameCount}</span>
                   </div>
                 )}
@@ -339,21 +449,22 @@ export function GoalCard({
 
             {/* Owner Action Buttons */}
             {isOwner && goal.status === 'active' && (
-              <div className="flex gap-2">
+              <div className="flex w-full flex-col space-y-2 sm:w-auto sm:flex-row sm:gap-2 sm:space-y-0">
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() => failGoalMutation.mutate()}
                   disabled={failGoalMutation.isPending}
-                  className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+                  className="text-xs text-red-600 hover:text-red-700 sm:text-sm dark:text-red-400 dark:hover:text-red-300"
                 >
-                  Mark Failed
+                  <span className="sm:hidden">Fail</span>
+                  <span className="hidden sm:inline">Mark Failed</span>
                 </Button>
                 <Button
                   size="sm"
                   onClick={() => shipGoalMutation.mutate()}
                   disabled={shipGoalMutation.isPending}
-                  className="bg-green-600 hover:bg-green-700"
+                  className="bg-green-600 text-xs hover:bg-green-700 sm:text-sm"
                 >
                   Ship It! 🚀
                 </Button>
