@@ -111,17 +111,17 @@ export default function UserProfilePage() {
   const isOwnProfile = currentUser?.id === userProfile.id
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
       {/* Profile Header */}
-      <div className="mb-8 flex items-center gap-4">
-        <Avatar className="h-16 w-16">
+      <div className="mb-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+        <Avatar className="h-16 w-16 sm:h-20 sm:w-20">
           <AvatarImage src={userProfile.image || undefined} />
-          <AvatarFallback className="text-xl">
+          <AvatarFallback className="text-xl sm:text-2xl">
             {userProfile.name.charAt(0).toUpperCase()}
           </AvatarFallback>
         </Avatar>
         <div>
-          <h1 className="text-3xl font-bold">{userProfile.name}</h1>
+          <h1 className="text-2xl font-bold sm:text-3xl">{userProfile.name}</h1>
           <p className="text-muted-foreground flex items-center gap-2 text-sm">
             <Calendar className="h-4 w-4" />
             Joined {format(new Date(userProfile.createdAt), 'MMMM yyyy')}
@@ -130,7 +130,7 @@ export default function UserProfilePage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="mb-8 grid gap-4 md:grid-cols-4">
+      <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Goals</CardTitle>

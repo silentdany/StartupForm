@@ -104,10 +104,10 @@ export default function ExplorePage() {
   }
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Explore Goals</h1>
-        <p className="text-muted-foreground mt-2">
+        <h1 className="text-2xl font-bold sm:text-3xl">Explore Goals</h1>
+        <p className="text-muted-foreground mt-2 text-sm sm:text-base">
           Discover the most popular goals! Goals are sorted by cheer count - the
           more cheers, the more motivation! ({pagination.total} total goals)
         </p>
@@ -123,7 +123,7 @@ export default function ExplorePage() {
         </Card>
       ) : (
         <>
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {goals.map((goal) => (
               <GoalCard
                 key={goal.id}
@@ -136,11 +136,13 @@ export default function ExplorePage() {
           </div>
 
           {pagination.totalPages > 1 && (
-            <div className="mt-8 flex items-center justify-center gap-4">
+            <div className="mt-6 flex flex-col items-center gap-4 sm:mt-8 sm:flex-row sm:justify-center">
               <Button
                 variant="outline"
+                size="sm"
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
+                className="w-full sm:w-auto"
               >
                 <ChevronLeft className="mr-2 h-4 w-4" />
                 Previous
@@ -152,10 +154,12 @@ export default function ExplorePage() {
 
               <Button
                 variant="outline"
+                size="sm"
                 onClick={() =>
                   setPage((p) => Math.min(pagination.totalPages, p + 1))
                 }
                 disabled={page === pagination.totalPages}
+                className="w-full sm:w-auto"
               >
                 Next
                 <ChevronRight className="ml-2 h-4 w-4" />

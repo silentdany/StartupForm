@@ -154,10 +154,10 @@ export default function DashboardPage() {
   return (
     <DashboardShell breadcrumbs={[{ label: 'Dashboard', isCurrentPage: true }]}>
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-1">
+        <div className="order-2 lg:order-1 lg:col-span-1">
           <GoalForm />
         </div>
-        <div className="lg:col-span-2">
+        <div className="order-1 lg:order-2 lg:col-span-2">
           <Card>
             <CardHeader>
               <CardTitle>Your Goals</CardTitle>
