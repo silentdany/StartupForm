@@ -58,6 +58,9 @@ interface Project {
     id: string
     name: string
     image?: string | null
+    twitterHandle?: string | null
+    twitterAvatarUrl?: string | null
+    twitterVerified?: boolean
   }
 }
 
@@ -179,17 +182,53 @@ export function ProjectCard({
                 {showUser && project.user && (
                   <div className="flex min-w-0 items-center gap-2">
                     <Avatar className="h-5 w-5 flex-shrink-0 sm:h-6 sm:w-6">
-                      <AvatarImage src={project.user.image || undefined} />
+                      <AvatarImage
+                        src={
+                          project.user.twitterAvatarUrl ||
+                          project.user.image ||
+                          undefined
+                        }
+                      />
                       <AvatarFallback className="text-xs">
                         {project.user.name.charAt(0).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
-                    <a
-                      href={`/users/${project.user.id}`}
-                      className="text-muted-foreground hover:text-foreground truncate text-xs hover:underline sm:text-sm"
-                    >
-                      {project.user.name}
-                    </a>
+                    <div className="flex min-w-0 items-center gap-1">
+                      <a
+                        href={`/users/${project.user.id}`}
+                        className="text-muted-foreground hover:text-foreground truncate text-xs hover:underline sm:text-sm"
+                      >
+                        {project.user.name}
+                      </a>
+                      {project.user.twitterHandle && (
+                        <>
+                          <span className="text-muted-foreground text-xs">
+                            •
+                          </span>
+                          <a
+                            href={`https://twitter.com/${project.user.twitterHandle}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
+                          >
+                            @{project.user.twitterHandle}
+                            {project.user.twitterVerified && (
+                              <svg
+                                className="h-2.5 w-2.5 flex-shrink-0 text-blue-500"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            )}
+                          </a>
+                        </>
+                      )}
+                    </div>
                   </div>
                 )}
                 {canEdit && (

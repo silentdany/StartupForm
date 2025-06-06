@@ -30,8 +30,32 @@ export async function GET() {
         name: true,
         email: true,
         image: true,
+        twitterHandle: true,
+        twitterId: true,
+        twitterAvatarUrl: true,
+        twitterBio: true,
+        twitterFollowers: true,
+        twitterVerified: true,
       },
     })
+
+    // Also fetch linked accounts for debugging
+    const accounts = await db.account.findMany({
+      where: {
+        userId: session.user.id,
+      },
+      select: {
+        id: true,
+        providerId: true,
+        accountId: true,
+        accessToken: false, // Don't expose the actual token for security
+        createdAt: true,
+      },
+    })
+
+    console.log('🚀 ~ GET /api/user ~ session:', session)
+    console.log('🚀 ~ GET /api/user ~ user from DB:', user)
+    console.log('🚀 ~ GET /api/user ~ linked accounts:', accounts)
 
     if (!user) {
       return new NextResponse('User not found', { status: 404 })

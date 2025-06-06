@@ -10,6 +10,12 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql', // or "mysql", "postgresql", ...etc
   }),
+  account: {
+    accountLinking: {
+      enabled: true,
+      trustedProviders: ['google', 'twitter'], // Auto-link these providers even without email verification
+    },
+  },
   plugins: [
     magicLink({
       sendMagicLink: async ({ email, token, url }, request) => {

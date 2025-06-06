@@ -182,3 +182,66 @@
 * **Lead Generation:** Projects capture interested users through goals.
 * **Community Building:** Builders support each other's projects.
 * **Revenue Potential:** Commission on sales, featured listings, premium features.
+
+## 7. Phase 6: Twitter/X Authentication & Social Integration
+
+**Primary Authentication System:**
+
+17. **Twitter/X OAuth Implementation:**
+    * **Replace Current Auth:** Make Twitter/X the primary and preferred authentication method.
+    * **Better Auth Integration:** Update Better Auth configuration for Twitter/X OAuth.
+    * **User Model Updates:**
+        * Add `twitterHandle`, `twitterId`, `twitterAvatarUrl` to User schema.
+        * Store Twitter profile data for enhanced user profiles.
+        * Optional fallback to email/password for users without Twitter.
+    * **UI Updates:**
+        * Prominent "Continue with Twitter" button on login/signup.
+        * Twitter branding and styling for auth components.
+        * Quick Twitter profile access throughout the app.
+
+18. **Enhanced User Profiles with Twitter Integration:**
+    * **Profile Display:**
+        * Show Twitter handle alongside username.
+        * Link to Twitter profile with external link icon.
+        * Use Twitter avatar as default profile image.
+        * Display Twitter bio if available.
+    * **Social Proof:**
+        * Twitter follower count (if public API allows).
+        * Verification status integration.
+        * Link to Twitter profile from goal cards and project cards.
+
+19. **Community Features:**
+    * **Twitter-Style Interactions:**
+        * Quick "Follow on Twitter" buttons on user profiles.
+        * Tweet integration for goal achievements ("I just shipped my goal!").
+        * Share goals and projects directly to Twitter.
+    * **Discovery Enhancement:**
+        * Find users by Twitter handle.
+        * Import Twitter bio for project descriptions.
+        * Suggest connections based on Twitter follows (if API permits).
+
+20. **Indie Hacker Community Focus:**
+    * **Specialized Features:**
+        * Integration with #buildinpublic hashtag culture.
+        * Tweet templates for goal updates and project launches.
+        * Community hashtags for goal types (#30daygoal, #shipit, etc.).
+    * **Social Validation:**
+        * Display Twitter metrics where relevant.
+        * Encourage cross-platform engagement.
+        * Build reputation across both platforms.
+
+**Technical Implementation:**
+
+* **OAuth Flow:** Standard Twitter OAuth 2.0 with PKCE.
+* **API Integration:** Twitter API v2 for profile data and optional posting.
+* **Data Sync:** Periodic sync of Twitter profile updates.
+* **Privacy Controls:** User control over what Twitter data is displayed.
+* **Migration Path:** Smooth transition for existing email/password users.
+
+**Community Benefits:**
+
+* **Frictionless Onboarding:** Single-click signup for Twitter users.
+* **Social Discovery:** Find and connect with fellow indie hackers.
+* **Cross-Platform Growth:** Leverage existing Twitter networks.
+* **Authentic Profiles:** Real Twitter identities reduce fake accounts.
+* **Viral Potential:** Easy sharing increases platform visibility.

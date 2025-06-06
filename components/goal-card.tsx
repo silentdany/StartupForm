@@ -4,14 +4,13 @@ import { GoalStatus } from '@/types/db'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import {
-  CheckCircle,
-  Clock,
   ExternalLink,
   Flame,
   FolderOpen,
   Heart,
   MessageCircle,
   Target,
+  Trophy,
   XCircle,
 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -42,6 +41,9 @@ interface Goal {
     id: string
     name: string
     image?: string | null
+    twitterHandle?: string | null
+    twitterAvatarUrl?: string | null
+    twitterVerified?: boolean
   }
   project?: {
     id: string
@@ -192,11 +194,11 @@ export function GoalCard({
   function getStatusIcon() {
     switch (goal.status) {
       case 'shipped':
-        return <CheckCircle className="h-5 w-5 text-green-500" />
+        return <Trophy className="h-4 w-4 text-green-600 sm:h-5 sm:w-5" />
       case 'failed':
-        return <XCircle className="h-5 w-5 text-red-500" />
+        return <XCircle className="h-4 w-4 text-red-600 sm:h-5 sm:w-5" />
       default:
-        return <Clock className="h-5 w-5 text-yellow-500" />
+        return <Target className="h-4 w-4 text-blue-600 sm:h-5 sm:w-5" />
     }
   }
 
@@ -232,6 +234,26 @@ export function GoalCard({
     !isOwner &&
     (goal.status === 'failed' || (goal.status === 'active' && isOverdue))
 
+  const handleTwitterShare = () => {
+    const baseUrl = 'https://twitter.com/intent/tweet'
+    let text = ''
+
+    if (goal.status === 'shipped') {
+      text = `🚀 Just shipped my goal: "${goal.description}"! #buildinpublic #shipit`
+    } else if (goal.status === 'active') {
+      text = `🎯 Working on: "${goal.description}" - Target: ${format(new Date(goal.targetDate), 'MMM d, yyyy')} #buildinpublic #goals`
+    } else {
+      text = `📝 My goal: "${goal.description}" #buildinpublic`
+    }
+
+    if (goal.project?.name) {
+      text += ` for ${goal.project.name}`
+    }
+
+    const url = `${baseUrl}?text=${encodeURIComponent(text)}`
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }
+
   return (
     <Card
       className={`${getStatusColor()} ${isOverdue ? 'border-red-300 dark:border-red-700' : ''}`}
@@ -247,17 +269,50 @@ export function GoalCard({
           {showUser && goal.user && (
             <div className="flex items-center gap-2">
               <Avatar className="h-5 w-5 sm:h-6 sm:w-6">
-                <AvatarImage src={goal.user.image || undefined} />
+                <AvatarImage
+                  src={
+                    goal.user.twitterAvatarUrl || goal.user.image || undefined
+                  }
+                />
                 <AvatarFallback className="text-xs">
                   {goal.user.name.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <a
-                href={`/users/${goal.user.id}`}
-                className="text-muted-foreground hover:text-foreground text-sm hover:underline"
-              >
-                {goal.user.name}
-              </a>
+              <div className="flex items-center gap-1">
+                <a
+                  href={`/users/${goal.user.id}`}
+                  className="text-muted-foreground hover:text-foreground text-sm hover:underline"
+                >
+                  {goal.user.name}
+                </a>
+                {goal.user.twitterHandle && (
+                  <>
+                    <span className="text-muted-foreground text-xs">•</span>
+                    <a
+                      href={`https://twitter.com/${goal.user.twitterHandle}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
+                    >
+                      @{goal.user.twitterHandle}
+                      {goal.user.twitterVerified && (
+                        <svg
+                          className="h-3 w-3 text-blue-500"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      )}
+                      <ExternalLink className="h-2.5 w-2.5" />
+                    </a>
+                  </>
+                )}
+              </div>
             </div>
           )}
         </div>
@@ -379,6 +434,23 @@ export function GoalCard({
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
+            {/* Twitter Share Button */}
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleTwitterShare}
+              className="text-xs text-blue-600 hover:text-blue-700 sm:text-sm dark:text-blue-400 dark:hover:text-blue-300"
+            >
+              <svg
+                className="h-3 w-3 sm:h-4 sm:w-4"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M18.206 2.25h3.308l-7.227 8.26 8.503 11.24H16.69l-5.214-6.817L4.95 21.75H1.64l7.73-8.835L1 2.25H8.18l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+              <span className="ml-1 hidden sm:inline">Share</span>
+            </Button>
+
             {/* Remind Button */}
             {canRemind && (
               <Button

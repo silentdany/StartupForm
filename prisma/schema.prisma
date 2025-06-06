@@ -13,6 +13,12 @@ model User {
   email             String
   emailVerified     Boolean
   image             String?
+  twitterHandle     String? // Twitter username without @
+  twitterId         String? // Twitter user ID
+  twitterAvatarUrl  String? // Twitter profile image URL
+  twitterBio        String? // Twitter bio/description
+  twitterFollowers  Int? // Twitter follower count
+  twitterVerified   Boolean    @default(false) // Twitter verification status
   createdAt         DateTime
   updatedAt         DateTime
   role              Role       @default(USER)
@@ -27,6 +33,7 @@ model User {
   projects          Project[]
 
   @@unique([email])
+  @@unique([twitterHandle])
   @@map("user")
 }
 
