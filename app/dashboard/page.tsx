@@ -26,6 +26,18 @@ interface Goal {
 }
 
 function GoalsList() {
+  // Get current user info
+  const { data: userInfo } = useQuery({
+    queryKey: ['current-user'],
+    queryFn: async () => {
+      const response = await fetch('/api/user')
+      if (!response.ok) {
+        return null
+      }
+      return response.json()
+    },
+  })
+
   const {
     data: goals,
     isLoading,
@@ -88,7 +100,12 @@ function GoalsList() {
           </h2>
           <div className="space-y-4">
             {activeGoals.map((goal) => (
-              <GoalCard key={goal.id} goal={goal} isOwner={true} />
+              <GoalCard
+                key={goal.id}
+                goal={goal}
+                isOwner={true}
+                currentUserId={userInfo?.id}
+              />
             ))}
           </div>
         </div>
@@ -101,7 +118,12 @@ function GoalsList() {
           </h2>
           <div className="space-y-4">
             {shippedGoals.map((goal) => (
-              <GoalCard key={goal.id} goal={goal} isOwner={true} />
+              <GoalCard
+                key={goal.id}
+                goal={goal}
+                isOwner={true}
+                currentUserId={userInfo?.id}
+              />
             ))}
           </div>
         </div>
@@ -114,7 +136,12 @@ function GoalsList() {
           </h2>
           <div className="space-y-4">
             {failedGoals.map((goal) => (
-              <GoalCard key={goal.id} goal={goal} isOwner={true} />
+              <GoalCard
+                key={goal.id}
+                goal={goal}
+                isOwner={true}
+                currentUserId={userInfo?.id}
+              />
             ))}
           </div>
         </div>

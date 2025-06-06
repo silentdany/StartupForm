@@ -17,6 +17,8 @@ interface Goal {
   createdAt: string
   updatedAt: string
   userId: string
+  cheerCount: number
+  isCheeredByUser: boolean
   user: {
     id: string
     name: string
@@ -37,6 +39,18 @@ interface PublicGoalsResponse {
 export default function ExplorePage() {
   const [page, setPage] = useState(1)
   const limit = 10
+
+  // Get current user info
+  const { data: userInfo } = useQuery({
+    queryKey: ['current-user'],
+    queryFn: async () => {
+      const response = await fetch('/api/user')
+      if (!response.ok) {
+        return null
+      }
+      return response.json()
+    },
+  })
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['public-goals', page],
@@ -93,8 +107,8 @@ export default function ExplorePage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Explore Goals</h1>
         <p className="text-muted-foreground mt-2">
-          See what others are working on and get inspired! ({pagination.total}{' '}
-          total goals)
+          Discover the most popular goals! Goals are sorted by cheer count - the
+          more cheers, the more motivation! ({pagination.total} total goals)
         </p>
       </div>
 
@@ -110,7 +124,13 @@ export default function ExplorePage() {
         <>
           <div className="space-y-6">
             {goals.map((goal) => (
-              <GoalCard key={goal.id} goal={goal} showUser={true} />
+              <GoalCard
+                key={goal.id}
+                goal={goal}
+                showUser={true}
+                currentUserId={userInfo?.id}
+                isOwner={userInfo?.id === goal.userId}
+              />
             ))}
           </div>
 

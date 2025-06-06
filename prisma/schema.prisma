@@ -19,6 +19,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
   goals         Goal[]
+  cheers        Cheer[]
 
   @@unique([email])
   @@map("user")
@@ -83,6 +84,19 @@ model Goal {
   status      String   @default("active") // "active", "shipped", "failed"
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  cheers      Cheer[]
 
   @@map("goal")
+}
+
+model Cheer {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  goalId    String
+  goal      Goal     @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, goalId])
+  @@map("cheer")
 }

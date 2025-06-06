@@ -11,6 +11,39 @@ const patchUserSchema = z.object({
   }),
 })
 
+export async function GET() {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    })
+
+    if (!session?.user?.id) {
+      return new NextResponse('Unauthorized', { status: 401 })
+    }
+
+    const user = await db.user.findUnique({
+      where: {
+        id: session.user.id,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        image: true,
+      },
+    })
+
+    if (!user) {
+      return new NextResponse('User not found', { status: 404 })
+    }
+
+    return NextResponse.json(user)
+  } catch (error) {
+    console.error('Failed to get user:', error)
+    return new NextResponse('Internal Server Error', { status: 500 })
+  }
+}
+
 export async function PATCH(req: Request) {
   try {
     const session = await auth.api.getSession({
