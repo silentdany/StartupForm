@@ -1,6 +1,8 @@
-import { PrismaClient } from '@prisma/client'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { PrismaClient, Role } from '@prisma/client'
 import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
+import { magicLink } from 'better-auth/plugins/magic-link'
 
 const prisma = new PrismaClient()
 
@@ -8,9 +10,33 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql', // or "mysql", "postgresql", ...etc
   }),
-  emailAndPassword: {
-    enabled: true,
-  },
+  plugins: [
+    magicLink({
+      sendMagicLink: async ({ email, token, url }, request) => {
+        const response = await fetch(
+          'https://app.loops.so/api/v1/transactional',
+          {
+            body: JSON.stringify({
+              transactionalId: process.env.LOOPS_TRANSACTION_ID,
+              email,
+              dataVariables: {
+                url,
+              },
+            }),
+            headers: {
+              Authorization: `Bearer ${process.env.LOOPS_API_KEY}`,
+              'Content-Type': 'application/json',
+            },
+            method: 'POST',
+          }
+        )
+        if (!response.ok) {
+          const { errors } = await response.json()
+          throw new Error(JSON.stringify(errors))
+        }
+      },
+    }),
+  ],
   socialProviders: {
     twitter: {
       clientId: process.env.TWITTER_CLIENT_ID as string,
@@ -25,7 +51,7 @@ export const auth = betterAuth({
     additionalFields: {
       role: {
         type: 'string',
-        defaultValue: 'user',
+        defaultValue: Role.USER,
       },
     },
   },

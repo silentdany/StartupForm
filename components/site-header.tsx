@@ -32,7 +32,11 @@ export function SiteHeader() {
 
   const isActive = (href: string) => {
     if (href.startsWith('/#')) {
-      return pathname === '/' && href.endsWith(window.location.hash)
+      return (
+        pathname === '/' &&
+        typeof window !== 'undefined' &&
+        href.endsWith(window.location.hash)
+      )
     }
     return pathname === href
   }

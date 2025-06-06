@@ -5,16 +5,18 @@ export type UserWithRelations = Prisma.UserGetPayload<{
   include: {
     accounts: true
     sessions: true
-    profile: true
+    goals: true
   }
 }>
 
-// Profile types
-export type ProfileWithUser = Prisma.ProfileGetPayload<{
+// Goal types
+export type GoalWithUser = Prisma.GoalGetPayload<{
   include: {
     user: true
   }
 }>
+
+export type GoalStatus = 'active' | 'shipped' | 'failed'
 
 // Account types
 export type AccountWithUser = Prisma.AccountGetPayload<{
@@ -36,5 +38,5 @@ export { Role }
 // Input types for mutations
 export type CreateUserInput = Prisma.UserCreateInput
 export type UpdateUserInput = Prisma.UserUpdateInput
-export type CreateProfileInput = Prisma.ProfileCreateInput
-export type UpdateProfileInput = Prisma.ProfileUpdateInput 
+export type CreateGoalInput = Prisma.GoalCreateInput
+export type UpdateGoalInput = Prisma.GoalUpdateInput
